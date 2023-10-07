@@ -56,7 +56,10 @@
           "width": 0.0
         }
       ],
-      "drc_exclusions": [],
+      "drc_exclusions": [
+        "courtyards_overlap|110862001|39089001|3be6bdec-04f0-4cc1-af37-c55f66bb275b|c9d51537-4fe9-48cd-9ff9-19ac3a6ab3c4",
+        "courtyards_overlap|119233201|39089001|3be6bdec-04f0-4cc1-af37-c55f66bb275b|5f406b31-fbc3-4fac-8df7-75102de1ed15"
+      ],
       "meta": {
         "version": 2
       },
@@ -98,8 +101,8 @@
         "skew_out_of_range": "error",
         "solder_mask_bridge": "error",
         "starved_thermal": "error",
-        "text_height": "warning",
-        "text_thickness": "warning",
+        "text_height": "ignore",
+        "text_thickness": "ignore",
         "through_hole_pad_without_hole": "error",
         "too_many_vias": "error",
         "track_dangling": "warning",
