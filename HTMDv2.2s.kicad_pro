@@ -58,7 +58,22 @@
       ],
       "drc_exclusions": [
         "courtyards_overlap|110862001|39089001|3be6bdec-04f0-4cc1-af37-c55f66bb275b|c9d51537-4fe9-48cd-9ff9-19ac3a6ab3c4",
-        "courtyards_overlap|119233201|39089001|3be6bdec-04f0-4cc1-af37-c55f66bb275b|5f406b31-fbc3-4fac-8df7-75102de1ed15"
+        "courtyards_overlap|119233201|39089001|3be6bdec-04f0-4cc1-af37-c55f66bb275b|5f406b31-fbc3-4fac-8df7-75102de1ed15",
+        "lib_footprint_mismatch|103712250|54522999|cf22e2f7-36da-4a73-80e1-ff65eb3e2b1b|00000000-0000-0000-0000-000000000000",
+        "lib_footprint_mismatch|105206800|76758799|ac9d0719-b2e6-46d5-9f80-512b366ad4a6|00000000-0000-0000-0000-000000000000",
+        "lib_footprint_mismatch|108000800|81584800|c19e8087-9dfb-43fb-b7e1-efc2cb8b3f6f|00000000-0000-0000-0000-000000000000",
+        "lib_footprint_mismatch|109626400|81584800|e17cef2e-7733-4444-a697-9ffe0dc821b4|00000000-0000-0000-0000-000000000000",
+        "lib_footprint_mismatch|111252000|81584800|d649d1ba-586f-40da-a1ae-70c64a7b4b71|00000000-0000-0000-0000-000000000000",
+        "lib_footprint_mismatch|112877600|81584800|ed15b46b-b67c-4ca7-87ad-5d8bdf1c37a7|00000000-0000-0000-0000-000000000000",
+        "lib_footprint_mismatch|119341050|75158600|5c19060d-a398-4773-9903-9158054e64b8|00000000-0000-0000-0000-000000000000",
+        "lib_footprint_mismatch|138226800|56997600|ee99c8a9-0995-4ec9-aaa3-c39030222f8f|00000000-0000-0000-0000-000000000000",
+        "lib_footprint_mismatch|148599950|82916400|3226974e-93e6-4469-ba5b-7231001b0667|00000000-0000-0000-0000-000000000000",
+        "lib_footprint_mismatch|79121000|78941000|146bc887-c39f-4c5d-8268-4234ecc11d61|00000000-0000-0000-0000-000000000000",
+        "lib_footprint_mismatch|85020890|58724800|aaecd7f5-0326-46a7-943f-622e10d04899|00000000-0000-0000-0000-000000000000",
+        "lib_footprint_mismatch|89602890|75184000|34f60f86-82f4-4c71-a661-0ab50e26a445|00000000-0000-0000-0000-000000000000",
+        "lib_footprint_mismatch|96888300|75876890|6ad0cab8-50d8-49f0-9406-48866b096c3f|00000000-0000-0000-0000-000000000000",
+        "lib_footprint_mismatch|97028000|59366890|e5b0b2a2-8709-4881-bb85-7896ba9ef29d|00000000-0000-0000-0000-000000000000",
+        "silk_overlap|138976801|55222600|bade66d3-b3e1-40da-b7e2-3cba1a650200|92fef53e-4bbb-423a-9ef6-8e4df04285da"
       ],
       "meta": {
         "version": 2
@@ -140,17 +155,17 @@
       "teardrop_options": [
         {
           "td_allow_use_two_tracks": true,
-          "td_curve_segcount": 5,
-          "td_on_pad_in_zone": false,
+          "td_curve_segcount": 10,
+          "td_on_pad_in_zone": true,
           "td_onpadsmd": true,
           "td_onroundshapesonly": false,
-          "td_ontrackend": false,
+          "td_ontrackend": true,
           "td_onviapad": true
         }
       ],
       "teardrop_parameters": [
         {
-          "td_curve_segcount": 0,
+          "td_curve_segcount": 10,
           "td_height_ratio": 1.0,
           "td_length_ratio": 0.5,
           "td_maxheight": 2.0,
@@ -159,7 +174,7 @@
           "td_width_to_size_filter_ratio": 0.9
         },
         {
-          "td_curve_segcount": 0,
+          "td_curve_segcount": 10,
           "td_height_ratio": 1.0,
           "td_length_ratio": 0.5,
           "td_maxheight": 2.0,
@@ -168,7 +183,7 @@
           "td_width_to_size_filter_ratio": 0.9
         },
         {
-          "td_curve_segcount": 0,
+          "td_curve_segcount": 10,
           "td_height_ratio": 1.0,
           "td_length_ratio": 0.5,
           "td_maxheight": 2.0,
