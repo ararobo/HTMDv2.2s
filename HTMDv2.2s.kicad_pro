@@ -34,9 +34,9 @@
         "other_text_thickness": 0.15,
         "other_text_upright": false,
         "pads": {
-          "drill": 0.762,
-          "height": 1.524,
-          "width": 1.524
+          "drill": 3.2,
+          "height": 5.6,
+          "width": 5.6
         },
         "silk_line_width": 0.15,
         "silk_text_italic": false,
@@ -59,6 +59,8 @@
       "drc_exclusions": [
         "courtyards_overlap|110862001|39089001|3be6bdec-04f0-4cc1-af37-c55f66bb275b|c9d51537-4fe9-48cd-9ff9-19ac3a6ab3c4",
         "courtyards_overlap|119233201|39089001|3be6bdec-04f0-4cc1-af37-c55f66bb275b|5f406b31-fbc3-4fac-8df7-75102de1ed15",
+        "courtyards_overlap|148911201|102587344|3be6bdec-04f0-4cc1-af37-c55f66bb275b|c9d51537-4fe9-48cd-9ff9-19ac3a6ab3c4",
+        "courtyards_overlap|157282401|102587344|3be6bdec-04f0-4cc1-af37-c55f66bb275b|5f406b31-fbc3-4fac-8df7-75102de1ed15",
         "lib_footprint_mismatch|103712250|54522999|cf22e2f7-36da-4a73-80e1-ff65eb3e2b1b|00000000-0000-0000-0000-000000000000",
         "lib_footprint_mismatch|105206800|76758799|ac9d0719-b2e6-46d5-9f80-512b366ad4a6|00000000-0000-0000-0000-000000000000",
         "lib_footprint_mismatch|108000800|81584800|c19e8087-9dfb-43fb-b7e1-efc2cb8b3f6f|00000000-0000-0000-0000-000000000000",
@@ -149,7 +151,7 @@
         "min_via_diameter": 0.39999999999999997,
         "solder_mask_clearance": 0.0,
         "solder_mask_min_width": 0.0,
-        "solder_mask_to_copper_clearance": 0.0,
+        "solder_mask_to_copper_clearance": 0.005,
         "use_height_for_length_calcs": true
       },
       "teardrop_options": [
