@@ -57,6 +57,7 @@ class A3921Driver
       setPhase(1);
       HAL_GPIO_WritePin(PWM_L_GPIO_Port,PWM_L_Pin,GPIO_PIN_RESET);
       HAL_GPIO_WritePin(SR_GPIO_Port,SR_Pin,GPIO_PIN_SET);
+      _isinit = true;  // Set the initialization flag
     }
 
   public:
@@ -70,12 +71,11 @@ class A3921Driver
     }
 
     // run motor driver
-    void run()
+    void run(uint16_t duty, bool phase)
     {
-      if(_isinit)
-      {
-        setDuty(_duty);
-        setPhase(_phase);
+      if(_isinit) {
+        setDuty(duty);
+        setPhase(phase);
       }
     }
 };
