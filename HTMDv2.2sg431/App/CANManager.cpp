@@ -11,6 +11,12 @@
 #include "main.h"
 #include "fdcan.h"
 
+// Message IDs
+#define STOP_COMMAND_ID           0x00F
+#define STOP_RESPONSE_ID          0x010
+#define OCD_NOTIFICATION_ID       0x040
+#define OVERHEAT_NOTIFICATION_ID  0x041
+
 //データ宣言
 FDCAN_TxHeaderTypeDef  TxHeader;
 FDCAN_RxHeaderTypeDef  RxHeader;
@@ -66,19 +72,37 @@ void CAN_Start_Send(uint8_t id)
     TxHeader.TxEventFifoControl = FDCAN_NO_TX_EVENTS;
     TxHeader.MessageMarker = 0;
     
-    if (HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, &TxHeader, TxData) != HAL_OK)
+    if (HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, &TxHeader, TxData) != HAL_OK)//CAN送信開始
 	{
 		Error_Handler();
 	}
+
     while(HAL_FDCAN_GetTxFifoFreeLevel(&hfdcan1) != 3) {}
 }
 
+void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo0ITs)
+{
+  if((RxFifo0ITs & FDCAN_IT_RX_FIFO0_NEW_MESSAGE) != RESET)
+  {
+    /* Retrieve Rx messages from RX FIFO0 */
+    if (HAL_FDCAN_GetRxMessage(hfdcan, FDCAN_RX_FIFO0, &RxHeader, RxData) != HAL_OK)
+    {
+    Error_Handler();
+    }
 
-// Message IDs
-#define STOP_COMMAND_ID           0x00F
-#define STOP_RESPONSE_ID          0x010
-#define OCD_NOTIFICATION_ID       0x040
-#define OVERHEAT_NOTIFICATION_ID  0x041
+    switch (RxHeader.Identifier){
+            //TODO:処理の分岐
+			case STOP_COMMAND_ID:
+				//ID：0x000の時の受信動作
+			break;
+			case 0x001:
+				//ID：0x001の時の受信動作
+			break;
+		}
+  }
+}
+
+
 
 // StopCommandの処理
 void Process_StopCommand(uint8_t* data)
@@ -95,4 +119,5 @@ void Process_StopCommand(uint8_t* data)
 // StopResponseの送信
 void Send_StopResponse(uint8_t md_id)
 {
+
 }
