@@ -9,10 +9,8 @@
 
 #pragma once
 
-// A3921_motor.hpp
-
-#ifndef A3921_MOTOR_HPP_
-#define A3921_MOTOR_HPP_
+#ifndef A3921Driver_HPP_
+#define A3921Driver_HPP_
 
 #include "main.h"
 
@@ -38,4 +36,4 @@ public:
     void run(float speed);
 };
 
-#endif /* A3921_MOTOR_HPP_ */
+#endif /* A3921Driver_HPP_ */

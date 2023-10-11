@@ -7,7 +7,6 @@
   ******************************************************************************
 **/
 
-
 // A3921_motor.cpp
 
 #include "A3921Driver.hpp"
@@ -20,11 +19,14 @@ void A3921Motor::init() {
 
 void A3921Motor::run(float speed) {
     // Check if absolute speed value is less than or equal to 1
-    if (fabsf(speed) <= 1.0f) {
+    if (fabsf(speed) <= 1.0f)
+    {
         // Set motor direction based on speed and direction
-        if ((speed >= 0.0f) ^ direction) {
+        if ((speed >= 0.0f) ^ direction)
+        {
             HAL_GPIO_WritePin(phase_port, phase_pin, GPIO_PIN_SET);
-        } else {
+        } else
+        {
             HAL_GPIO_WritePin(phase_port, phase_pin, GPIO_PIN_RESET);
         }
 
