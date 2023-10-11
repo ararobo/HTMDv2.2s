@@ -63,8 +63,6 @@ void Error_Handler(void);
 #define OCD1_GPIO_Port GPIOC
 #define OCD2_Pin GPIO_PIN_15
 #define OCD2_GPIO_Port GPIOC
-#define PWM_H_Pin GPIO_PIN_0
-#define PWM_H_GPIO_Port GPIOA
 #define PWM_L_Pin GPIO_PIN_1
 #define PWM_L_GPIO_Port GPIOA
 #define PHASE_Pin GPIO_PIN_2
