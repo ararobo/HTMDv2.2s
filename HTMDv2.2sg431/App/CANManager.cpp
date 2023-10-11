@@ -91,7 +91,7 @@ void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo0ITs)
     }
 
     switch (RxHeader.Identifier){
-            //TODO:処理の分岐
+            //TODO:処理の分岐かく
 			case STOP_COMMAND_ID:
 				//ID：0x000の時の受信動作
 			break;
