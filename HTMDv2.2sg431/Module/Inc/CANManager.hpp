@@ -14,8 +14,6 @@
 #include "fdcan.h"
 #include "A3921Driver.hpp"
 
-extern A3921Driver A3921DriverInstance;
-
 class CANManager
 {
 private:
