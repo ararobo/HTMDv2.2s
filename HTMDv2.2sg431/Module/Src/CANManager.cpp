@@ -75,9 +75,13 @@ void CANManager::HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t
                 case STOP_COMMAND_ID:
                     // Perform operations for ID 0x000
                     break;
-                case 0x001:
+                case INIT_WITH_CONF_ID:
                     // Perform operations for ID 0x001
                     break;
+                case MOTOR_RUN:
+                    ;
+                case STATUS_REQUEST_ID:
+                    ; 
             }
         }
 }

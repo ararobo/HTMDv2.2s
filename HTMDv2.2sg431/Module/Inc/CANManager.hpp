@@ -12,6 +12,9 @@
 #include "stm32g4xx_hal.h"
 #include "main.h"
 #include "fdcan.h"
+#include "A3921Driver.hpp"
+
+extern A3921Driver A3921DriverInstance;
 
 class CANManager
 {
