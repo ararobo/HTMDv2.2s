@@ -98,6 +98,7 @@ void Error_Handler(void);
 #define LIM1_GPIO_Port GPIOB
 
 /* USER CODE BEGIN Private defines */
+//TODO:インスタンスに値指定しろ
 extern A3921Driver A3921DriverInstance;
 /* USER CODE END Private defines */
 
