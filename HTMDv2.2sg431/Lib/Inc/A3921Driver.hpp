@@ -14,7 +14,7 @@
 
 #include "main.h"
 
-class A3921Motor {
+class A3921Driver {
 private:
     static const uint8_t A3921_DIR_FW = 0; // static constant for forward direction
     static const uint8_t A3921_DIR_BC = 1; // static constant for backward direction
@@ -26,7 +26,7 @@ private:
     uint16_t phase_pin;           // GPIO pin
 
 public:
-    A3921Motor(TIM_HandleTypeDef* _timer, uint32_t _channel, uint8_t _direction, GPIO_TypeDef* _phase_port, uint16_t _phase_pin)
+    A3921Driver(TIM_HandleTypeDef* _timer, uint32_t _channel, uint8_t _direction, GPIO_TypeDef* _phase_port, uint16_t _phase_pin)
         : timer(_timer), channel(_channel), direction(_direction), phase_port(_phase_port), phase_pin(_phase_pin) {} // Constructor
 
     // Initialize the motor

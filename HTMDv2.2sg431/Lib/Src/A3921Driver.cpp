@@ -12,12 +12,12 @@
 #include "A3921Driver.hpp"
 #include <cmath>
 
-void A3921Motor::init() {
+void A3921Driver::init() {
     // Start PWM for motor
     HAL_TIM_PWM_Start(timer, channel);
 }
 
-void A3921Motor::run(float speed) {
+void A3921Driver::run(float speed) {
     // Check if absolute speed value is less than or equal to 1
     if (fabsf(speed) <= 1.0f)
     {
