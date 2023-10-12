@@ -15,10 +15,10 @@
 #include "main.h"
 
 class A3921Driver {
-private:
+public:
     static const uint8_t A3921_DIR_FW = 0; // static constant for forward direction
     static const uint8_t A3921_DIR_BC = 1; // static constant for backward direction
-    
+private:
     TIM_HandleTypeDef* timer;     // timer structure
     uint32_t channel;             // timer channel
     uint8_t direction;            // motor rotation direction

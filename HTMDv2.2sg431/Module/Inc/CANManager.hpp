@@ -11,8 +11,11 @@
 
 #include "stm32g4xx_hal.h"
 #include "main.h"
+#include "tim.h"
 #include "fdcan.h"
 #include "A3921Driver.hpp"
+
+A3921Driver A3921DriverInstance(&htim2, TIM_CHANNEL_1,A3921Driver::A3921_DIR_FW,PHASE_GPIO_Port,PHASE_Pin);
 
 class CANManager
 {
