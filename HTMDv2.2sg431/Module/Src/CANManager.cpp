@@ -9,6 +9,7 @@
 
 #include "CANManager.hpp"
 
+
 // Initialize static const members
 const uint16_t CANManager::STOP_COMMAND_ID = 0x00F;
 const uint16_t CANManager::STOP_RESPONSE_ID = 0x010;
