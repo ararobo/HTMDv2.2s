@@ -25,11 +25,11 @@ private:
     I2C_HandleTypeDef* pI2CHandle;
     UART_HandleTypeDef* pUARTHandle;
 
-    uint8_t ADCdatarec[5];
-    uint16_t MCP3421add;
+    const uint8_t ADCdatarec[5] = {0};
+    const uint8_t MCP3421add = 0b1101000;
     uint32_t ADCval;
     int Resolution;
-    uint8_t config;
+    const uint8_t config;
 };
 
 
