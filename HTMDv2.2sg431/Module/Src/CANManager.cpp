@@ -9,6 +9,7 @@
 
 #include "CANManager.hpp"
 
+A3921Driver A3921DriverInstance(&htim2, TIM_CHANNEL_1,A3921Driver::A3921_DIR_FW,PHASE_GPIO_Port,PHASE_Pin);
 
 // Initialize static const members
 const uint16_t CANManager::STOP_COMMAND_ID = 0x00F;
@@ -21,8 +22,11 @@ const uint16_t CANManager::MOTOR_RUN = 0x020;
 const uint16_t CANManager::STATUS_REQUEST_ID = 0x030;
 const uint16_t CANManager::STATUS_RESPONSE_ID = 0x031;
 
+
 void CANManager::CAN_FilterSetup()
 {
+    Is_init = false;
+
     sFilterConfig.IdType = FDCAN_STANDARD_ID;
     sFilterConfig.FilterIndex = 0;
     sFilterConfig.FilterType = FDCAN_FILTER_MASK;
@@ -80,15 +84,17 @@ void CANManager::HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t
             }
 
             switch (RxHeader.Identifier){
-                case STOP_COMMAND_ID:
-                    // Perform operations for ID 0x000
-                    break;
                 case INIT_WITH_CONF_ID:
-                    // Perform operations for ID 0x001
-                    break;
+                    Rcv_Init_with_conf();
                 case MOTOR_RUN:
                 //TODO:関数実装しろ
                     ;
             }
         }
+}
+
+
+void CANManager::Rcv_Init_with_conf()
+{
+    Is_init = true;
 }

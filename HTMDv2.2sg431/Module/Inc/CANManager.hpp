@@ -15,7 +15,7 @@
 #include "fdcan.h"
 #include "A3921Driver.hpp"
 
-A3921Driver A3921DriverInstance(&htim2, TIM_CHANNEL_1,A3921Driver::A3921_DIR_FW,PHASE_GPIO_Port,PHASE_Pin);
+extern A3921Driver A3921DriverInstance;
 
 class CANManager
 {
@@ -37,7 +37,11 @@ private:
     uint32_t TxMailbox;
     FDCAN_FilterTypeDef  sFilterConfig;
 
+    void Rcv_Init_with_conf();
+
 public:
+    bool Is_init;
+
     void CAN_FilterSetup();
     void CAN_Start();
     void CAN_Start_Send(uint8_t id);
