@@ -88,11 +88,7 @@ void CANManager::HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t
                     break;
                 case MOTOR_RUN:
                 //TODO:関数実装しろ
-                    float Tekitou = 1.0;
-                    A3921DriverInstance.run(Tekitou);
                     ;
-                case STATUS_REQUEST_ID:
-                    ; 
             }
         }
 }
