@@ -8479,36 +8479,6 @@
     )
   )
 
-  (symbol (lib_id "power:VCC") (at 233.553 179.324 0) (unit 1)
-    (in_bom yes) (on_board yes) (dnp no)
-    (uuid 88202088-be4e-4832-bdd2-c33ff6d9a01f)
-    (property "Reference" "#PWR061" (at 233.553 183.134 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (property "Value" "VCC" (at 233.553 174.371 0)
-      (effects (font (size 1.27 1.27)))
-    )
-    (property "Footprint" "" (at 233.553 179.324 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (property "Datasheet" "" (at 233.553 179.324 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (pin "1" (uuid 7cc7fa0d-59dc-4598-941c-617bff9b1956))
-    (instances
-      (project "HTMDv2.2s"
-        (path "/b4476ce1-4dbe-4b8d-acdf-5a8a6cb2187e"
-          (reference "#PWR061") (unit 1)
-        )
-      )
-      (project "HTMDv1.3"
-        (path "/ba6e8f7f-5a8b-40bd-8573-0dda1fc2862b"
-          (reference "#PWR016") (unit 1)
-        )
-      )
-    )
-  )
-
   (symbol (lib_id "Device:L") (at 135.255 32.639 90) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 8822f9e8-71ca-4cb5-80e9-76cb164caed3)
@@ -9202,36 +9172,6 @@
     )
   )
 
-  (symbol (lib_id "power:VCC") (at 254 179.07 0) (unit 1)
-    (in_bom yes) (on_board yes) (dnp no)
-    (uuid a209808d-7af3-4f1c-bb7f-4dafc830e540)
-    (property "Reference" "#PWR064" (at 254 182.88 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (property "Value" "VCC" (at 254 174.117 0)
-      (effects (font (size 1.27 1.27)))
-    )
-    (property "Footprint" "" (at 254 179.07 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (property "Datasheet" "" (at 254 179.07 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (pin "1" (uuid f577fcec-a1bf-420d-b785-9a49c4420815))
-    (instances
-      (project "HTMDv2.2s"
-        (path "/b4476ce1-4dbe-4b8d-acdf-5a8a6cb2187e"
-          (reference "#PWR064") (unit 1)
-        )
-      )
-      (project "HTMDv1.3"
-        (path "/ba6e8f7f-5a8b-40bd-8573-0dda1fc2862b"
-          (reference "#PWR016") (unit 1)
-        )
-      )
-    )
-  )
-
   (symbol (lib_id "power:+5VA") (at 181.991 82.169 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid a5210f1e-2fa3-4bc4-bc7a-dc53664ec397)
@@ -9841,6 +9781,31 @@
     )
   )
 
+  (symbol (lib_id "power:+3.3V") (at 233.553 179.324 0) (unit 1)
+    (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
+    (uuid c0729b11-e4bc-4de9-bab8-3bf2398f25ef)
+    (property "Reference" "#PWR017" (at 233.553 183.134 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Value" "+3.3V" (at 233.553 174.244 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Footprint" "" (at 233.553 179.324 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Datasheet" "" (at 233.553 179.324 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (pin "1" (uuid 8f3077ec-5d30-4937-bd0b-25f80c317cdb))
+    (instances
+      (project "HTMDv2.2s"
+        (path "/b4476ce1-4dbe-4b8d-acdf-5a8a6cb2187e"
+          (reference "#PWR017") (unit 1)
+        )
+      )
+    )
+  )
+
   (symbol (lib_id "0-Myparts:SQJ180EP-T1_GE3") (at 288.798 134.366 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid c0c2451b-7cc7-4cd4-b278-93c005ed8a33)
@@ -10054,6 +10019,31 @@
       (project "HTMDv2.2s"
         (path "/b4476ce1-4dbe-4b8d-acdf-5a8a6cb2187e"
           (reference "U5") (unit 1)
+        )
+      )
+    )
+  )
+
+  (symbol (lib_id "power:+3.3V") (at 254 179.07 0) (unit 1)
+    (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
+    (uuid cb04ada5-d11f-4477-8f43-9276cc4dbd07)
+    (property "Reference" "#PWR018" (at 254 182.88 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Value" "+3.3V" (at 254 173.99 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Footprint" "" (at 254 179.07 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Datasheet" "" (at 254 179.07 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (pin "1" (uuid c2d5466b-d674-4b37-a908-f1f8d9e6f835))
+    (instances
+      (project "HTMDv2.2s"
+        (path "/b4476ce1-4dbe-4b8d-acdf-5a8a6cb2187e"
+          (reference "#PWR018") (unit 1)
         )
       )
     )
@@ -10296,6 +10286,31 @@
       (project "HTMDv2.2s"
         (path "/b4476ce1-4dbe-4b8d-acdf-5a8a6cb2187e"
           (reference "C21") (unit 1)
+        )
+      )
+    )
+  )
+
+  (symbol (lib_id "power:+3.3V") (at 254.381 238.76 0) (unit 1)
+    (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
+    (uuid d834b069-955c-46cf-9e13-66b673ce2d91)
+    (property "Reference" "#PWR010" (at 254.381 242.57 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Value" "+3.3V" (at 254.381 233.68 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Footprint" "" (at 254.381 238.76 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Datasheet" "" (at 254.381 238.76 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (pin "1" (uuid f2012574-d65b-4e0d-8662-670e8bc45467))
+    (instances
+      (project "HTMDv2.2s"
+        (path "/b4476ce1-4dbe-4b8d-acdf-5a8a6cb2187e"
+          (reference "#PWR010") (unit 1)
         )
       )
     )
@@ -10565,36 +10580,6 @@
       (project "HTMDv2.2s"
         (path "/b4476ce1-4dbe-4b8d-acdf-5a8a6cb2187e"
           (reference "#PWR032") (unit 1)
-        )
-      )
-    )
-  )
-
-  (symbol (lib_id "power:VCC") (at 254.381 238.76 0) (mirror y) (unit 1)
-    (in_bom yes) (on_board yes) (dnp no)
-    (uuid e4685091-477e-4498-96db-7f98214ff07e)
-    (property "Reference" "#PWR010" (at 254.381 242.57 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (property "Value" "VCC" (at 254.381 233.807 0)
-      (effects (font (size 1.27 1.27)))
-    )
-    (property "Footprint" "" (at 254.381 238.76 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (property "Datasheet" "" (at 254.381 238.76 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (pin "1" (uuid 0bc481cb-62a7-413c-aea4-eb8609524ef9))
-    (instances
-      (project "HTMDv2.2s"
-        (path "/b4476ce1-4dbe-4b8d-acdf-5a8a6cb2187e"
-          (reference "#PWR010") (unit 1)
-        )
-      )
-      (project "HTMDv1.3"
-        (path "/ba6e8f7f-5a8b-40bd-8573-0dda1fc2862b"
-          (reference "#PWR016") (unit 1)
         )
       )
     )
