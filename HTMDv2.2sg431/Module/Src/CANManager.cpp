@@ -12,7 +12,7 @@
 A3921Driver A3921DriverInstance(&htim2, TIM_CHANNEL_1,A3921Driver::A3921_DIR_FW,PHASE_GPIO_Port,PHASE_Pin);
 
 // Initialize static const members
-const uint16_t CANManager::STOP_COMMAND_ID = 0x00F;
+const uint16_t CANManager::STOP_COMMAND_ID = 0x555;//0x00F
 const uint16_t CANManager::STOP_RESPONSE_ID = 0x010;
 const uint16_t CANManager::OCD_NOTIFICATION_ID = 0x040;
 const uint16_t CANManager::OVERHEAT_NOTIFICATION_ID = 0x041;
@@ -43,15 +43,18 @@ void CANManager::CAN_FilterSetup()
 
 void CANManager::CAN_Start()
 {
+    if (HAL_FDCAN_ActivateNotification(&hfdcan1, FDCAN_IT_RX_FIFO0_NEW_MESSAGE, 0) != HAL_OK)
+    {
+        Error_Handler();
+    }
+
     if(HAL_FDCAN_Start(&hfdcan1) != HAL_OK)
     {
         Error_Handler();
     }
 
-    if (HAL_FDCAN_ActivateNotification(&hfdcan1, FDCAN_IT_RX_FIFO0_NEW_MESSAGE, 0) != HAL_OK)
-    {
-        Error_Handler();
-    }
+    uint8_t CANINITMSG[] = "CAN started!\n";
+    HAL_UART_Transmit(&huart3,CANINITMSG,sizeof(CANINITMSG),HAL_MAX_DELAY);
 }
 
 void CANManager::CAN_Start_Send(uint8_t id)
@@ -74,7 +77,7 @@ void CANManager::CAN_Start_Send(uint8_t id)
     while(HAL_FDCAN_GetTxFifoFreeLevel(&hfdcan1) != 3) {}
 }
 
-void CANManager::HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo0ITs)
+/*void CANManager::HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo0ITs)
 {
     if((RxFifo0ITs & FDCAN_IT_RX_FIFO0_NEW_MESSAGE) != RESET)
         {
@@ -83,16 +86,19 @@ void CANManager::HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t
                 Error_Handler();
             }
 
+            uint8_t CANRCVMSG[] = "CAN msg rcved!\n";
+            HAL_UART_Transmit(&huart3,CANRCVMSG,sizeof(CANRCVMSG),HAL_MAX_DELAY);
             switch (RxHeader.Identifier){
                 case INIT_WITH_CONF_ID:
                     Rcv_Init_with_conf();
+                    break;
                 case MOTOR_RUN:
                 //TODO:関数実装しろ
                     ;
             }
         }
 }
-
+*/
 
 void CANManager::Rcv_Init_with_conf()
 {

@@ -1,0 +1,777 @@
+ARM GAS  C:\Users\hamuc\AppData\Local\Temp\cclhYHXF.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"CANManager.cpp"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.file 1 "Module/Src/CANManager.cpp"
+  20              		.section	.text._Z41__static_initialization_and_destruction_0ii,"ax",%progbits
+  21              		.align	1
+  22              		.syntax unified
+  23              		.thumb
+  24              		.thumb_func
+  26              	_Z41__static_initialization_and_destruction_0ii:
+  27              		.fnstart
+  28              	.LVL0:
+  29              	.LFB139:
+   1:Module/Src/CANManager.cpp **** /**
+   2:Module/Src/CANManager.cpp ****   ******************************************************************************
+   3:Module/Src/CANManager.cpp ****   * @file    CANManager.cpp
+   4:Module/Src/CANManager.cpp ****   * @brief   Program for CAN communication
+   5:Module/Src/CANManager.cpp ****   * @author @hamuchan214
+   6:Module/Src/CANManager.cpp ****   * @date 2023/10/11
+   7:Module/Src/CANManager.cpp ****   ******************************************************************************
+   8:Module/Src/CANManager.cpp **** **/
+   9:Module/Src/CANManager.cpp **** 
+  10:Module/Src/CANManager.cpp **** #include "CANManager.hpp"
+  11:Module/Src/CANManager.cpp **** 
+  12:Module/Src/CANManager.cpp **** A3921Driver A3921DriverInstance(&htim2, TIM_CHANNEL_1,A3921Driver::A3921_DIR_FW,PHASE_GPIO_Port,PHA
+  13:Module/Src/CANManager.cpp **** 
+  14:Module/Src/CANManager.cpp **** // Initialize static const members
+  15:Module/Src/CANManager.cpp **** const uint16_t CANManager::STOP_COMMAND_ID = 0x555;//0x00F
+  16:Module/Src/CANManager.cpp **** const uint16_t CANManager::STOP_RESPONSE_ID = 0x010;
+  17:Module/Src/CANManager.cpp **** const uint16_t CANManager::OCD_NOTIFICATION_ID = 0x040;
+  18:Module/Src/CANManager.cpp **** const uint16_t CANManager::OVERHEAT_NOTIFICATION_ID = 0x041;
+  19:Module/Src/CANManager.cpp **** const uint16_t CANManager::INIT_WITH_CONF_ID = 0x0FF;
+  20:Module/Src/CANManager.cpp **** const uint16_t CANManager::INIT_RESPONSE_ID = 0x011;
+  21:Module/Src/CANManager.cpp **** const uint16_t CANManager::MOTOR_RUN = 0x020;
+  22:Module/Src/CANManager.cpp **** const uint16_t CANManager::STATUS_REQUEST_ID = 0x030;
+  23:Module/Src/CANManager.cpp **** const uint16_t CANManager::STATUS_RESPONSE_ID = 0x031;
+  24:Module/Src/CANManager.cpp **** 
+  25:Module/Src/CANManager.cpp **** 
+  26:Module/Src/CANManager.cpp **** void CANManager::CAN_FilterSetup()
+  27:Module/Src/CANManager.cpp **** {
+  28:Module/Src/CANManager.cpp ****     Is_init = false;
+  29:Module/Src/CANManager.cpp **** 
+ARM GAS  C:\Users\hamuc\AppData\Local\Temp\cclhYHXF.s 			page 2
+
+
+  30:Module/Src/CANManager.cpp ****     sFilterConfig.IdType = FDCAN_STANDARD_ID;
+  31:Module/Src/CANManager.cpp ****     sFilterConfig.FilterIndex = 0;
+  32:Module/Src/CANManager.cpp ****     sFilterConfig.FilterType = FDCAN_FILTER_MASK;
+  33:Module/Src/CANManager.cpp ****     sFilterConfig.FilterConfig = FDCAN_FILTER_TO_RXFIFO0;
+  34:Module/Src/CANManager.cpp ****     sFilterConfig.FilterID1 = 0x000;
+  35:Module/Src/CANManager.cpp ****     sFilterConfig.FilterID2 = 0x000;
+  36:Module/Src/CANManager.cpp **** 
+  37:Module/Src/CANManager.cpp ****     // Apply the filter settings
+  38:Module/Src/CANManager.cpp ****     if(HAL_FDCAN_ConfigFilter(&hfdcan1, &sFilterConfig) != HAL_OK)
+  39:Module/Src/CANManager.cpp ****     {
+  40:Module/Src/CANManager.cpp ****         Error_Handler();
+  41:Module/Src/CANManager.cpp ****     }
+  42:Module/Src/CANManager.cpp **** }
+  43:Module/Src/CANManager.cpp **** 
+  44:Module/Src/CANManager.cpp **** void CANManager::CAN_Start()
+  45:Module/Src/CANManager.cpp **** {
+  46:Module/Src/CANManager.cpp ****     if (HAL_FDCAN_ActivateNotification(&hfdcan1, FDCAN_IT_RX_FIFO0_NEW_MESSAGE, 0) != HAL_OK)
+  47:Module/Src/CANManager.cpp ****     {
+  48:Module/Src/CANManager.cpp ****         Error_Handler();
+  49:Module/Src/CANManager.cpp ****     }
+  50:Module/Src/CANManager.cpp **** 
+  51:Module/Src/CANManager.cpp ****     if(HAL_FDCAN_Start(&hfdcan1) != HAL_OK)
+  52:Module/Src/CANManager.cpp ****     {
+  53:Module/Src/CANManager.cpp ****         Error_Handler();
+  54:Module/Src/CANManager.cpp ****     }
+  55:Module/Src/CANManager.cpp **** 
+  56:Module/Src/CANManager.cpp ****     uint8_t CANINITMSG[] = "CAN started!\n";
+  57:Module/Src/CANManager.cpp ****     HAL_UART_Transmit(&huart3,CANINITMSG,sizeof(CANINITMSG),HAL_MAX_DELAY);
+  58:Module/Src/CANManager.cpp **** }
+  59:Module/Src/CANManager.cpp **** 
+  60:Module/Src/CANManager.cpp **** void CANManager::CAN_Start_Send(uint8_t id)
+  61:Module/Src/CANManager.cpp **** {
+  62:Module/Src/CANManager.cpp ****     TxHeader.Identifier = id;
+  63:Module/Src/CANManager.cpp ****     TxHeader.IdType = FDCAN_STANDARD_ID;
+  64:Module/Src/CANManager.cpp ****     TxHeader.TxFrameType = FDCAN_DATA_FRAME;
+  65:Module/Src/CANManager.cpp ****     TxHeader.DataLength = FDCAN_DLC_BYTES_8;
+  66:Module/Src/CANManager.cpp ****     TxHeader.ErrorStateIndicator = FDCAN_ESI_ACTIVE;
+  67:Module/Src/CANManager.cpp ****     TxHeader.BitRateSwitch = FDCAN_BRS_OFF;
+  68:Module/Src/CANManager.cpp ****     TxHeader.FDFormat = FDCAN_CLASSIC_CAN;
+  69:Module/Src/CANManager.cpp ****     TxHeader.TxEventFifoControl = FDCAN_NO_TX_EVENTS;
+  70:Module/Src/CANManager.cpp ****     TxHeader.MessageMarker = 0;
+  71:Module/Src/CANManager.cpp **** 
+  72:Module/Src/CANManager.cpp ****     if (HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, &TxHeader, TxData) != HAL_OK)
+  73:Module/Src/CANManager.cpp ****     {
+  74:Module/Src/CANManager.cpp ****         Error_Handler();
+  75:Module/Src/CANManager.cpp ****     }
+  76:Module/Src/CANManager.cpp **** 
+  77:Module/Src/CANManager.cpp ****     while(HAL_FDCAN_GetTxFifoFreeLevel(&hfdcan1) != 3) {}
+  78:Module/Src/CANManager.cpp **** }
+  79:Module/Src/CANManager.cpp **** 
+  80:Module/Src/CANManager.cpp **** /*void CANManager::HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo0ITs)
+  81:Module/Src/CANManager.cpp **** {
+  82:Module/Src/CANManager.cpp ****     if((RxFifo0ITs & FDCAN_IT_RX_FIFO0_NEW_MESSAGE) != RESET)
+  83:Module/Src/CANManager.cpp ****         {
+  84:Module/Src/CANManager.cpp ****             if (HAL_FDCAN_GetRxMessage(hfdcan, FDCAN_RX_FIFO0, &RxHeader, RxData) != HAL_OK)
+  85:Module/Src/CANManager.cpp ****             {
+  86:Module/Src/CANManager.cpp ****                 Error_Handler();
+ARM GAS  C:\Users\hamuc\AppData\Local\Temp\cclhYHXF.s 			page 3
+
+
+  87:Module/Src/CANManager.cpp ****             }
+  88:Module/Src/CANManager.cpp **** 
+  89:Module/Src/CANManager.cpp ****             uint8_t CANRCVMSG[] = "CAN msg rcved!\n";
+  90:Module/Src/CANManager.cpp ****             HAL_UART_Transmit(&huart3,CANRCVMSG,sizeof(CANRCVMSG),HAL_MAX_DELAY);
+  91:Module/Src/CANManager.cpp ****             switch (RxHeader.Identifier){
+  92:Module/Src/CANManager.cpp ****                 case INIT_WITH_CONF_ID:
+  93:Module/Src/CANManager.cpp ****                     Rcv_Init_with_conf();
+  94:Module/Src/CANManager.cpp ****                     break;
+  95:Module/Src/CANManager.cpp ****                 case MOTOR_RUN:
+  96:Module/Src/CANManager.cpp ****                 //TODO:関数実装しろ
+  97:Module/Src/CANManager.cpp ****                     ;
+  98:Module/Src/CANManager.cpp ****             }
+  99:Module/Src/CANManager.cpp ****         }
+ 100:Module/Src/CANManager.cpp **** }
+ 101:Module/Src/CANManager.cpp **** */
+ 102:Module/Src/CANManager.cpp **** 
+ 103:Module/Src/CANManager.cpp **** void CANManager::Rcv_Init_with_conf()
+ 104:Module/Src/CANManager.cpp **** {
+ 105:Module/Src/CANManager.cpp ****     Is_init = true;
+ 106:Module/Src/CANManager.cpp **** }
+  30              		.loc 1 106 1 view -0
+  31              		.cfi_startproc
+  32              		@ args = 0, pretend = 0, frame = 0
+  33              		@ frame_needed = 0, uses_anonymous_args = 0
+  34              		@ link register save eliminated.
+  35              		.loc 1 106 1 is_stmt 0 view .LVU1
+  36 0000 0128     		cmp	r0, #1
+  37 0002 00D0     		beq	.L3
+  38              	.L1:
+  39 0004 7047     		bx	lr
+  40              	.L3:
+  41              		.loc 1 106 1 discriminator 1 view .LVU2
+  42 0006 4FF6FF73 		movw	r3, #65535
+  43 000a 9942     		cmp	r1, r3
+  44 000c FAD1     		bne	.L1
+  45              	.LVL1:
+  46              	.LBB5:
+  47              	.LBI5:
+  48              		.file 2 "Lib/Inc/A3921Driver.hpp"
+   1:Lib/Inc/A3921Driver.hpp **** /**
+   2:Lib/Inc/A3921Driver.hpp ****   ******************************************************************************
+   3:Lib/Inc/A3921Driver.hpp ****   * @file    A3921Driver.hpp
+   4:Lib/Inc/A3921Driver.hpp ****   * @brief   A3921駆動用のプログラム
+   5:Lib/Inc/A3921Driver.hpp ****   * @author @hamuchan214
+   6:Lib/Inc/A3921Driver.hpp ****   * @date 2023/10/11
+   7:Lib/Inc/A3921Driver.hpp ****   ******************************************************************************
+   8:Lib/Inc/A3921Driver.hpp **** **/
+   9:Lib/Inc/A3921Driver.hpp **** 
+  10:Lib/Inc/A3921Driver.hpp **** #pragma once
+  11:Lib/Inc/A3921Driver.hpp **** 
+  12:Lib/Inc/A3921Driver.hpp **** #ifndef A3921Driver_HPP_
+  13:Lib/Inc/A3921Driver.hpp **** #define A3921Driver_HPP_
+  14:Lib/Inc/A3921Driver.hpp **** 
+  15:Lib/Inc/A3921Driver.hpp **** #include "main.h"
+  16:Lib/Inc/A3921Driver.hpp **** 
+  17:Lib/Inc/A3921Driver.hpp **** class A3921Driver {
+  18:Lib/Inc/A3921Driver.hpp **** public:
+ARM GAS  C:\Users\hamuc\AppData\Local\Temp\cclhYHXF.s 			page 4
+
+
+  19:Lib/Inc/A3921Driver.hpp ****     static const uint8_t A3921_DIR_FW = 0; // static constant for forward direction
+  20:Lib/Inc/A3921Driver.hpp ****     static const uint8_t A3921_DIR_BC = 1; // static constant for backward direction
+  21:Lib/Inc/A3921Driver.hpp **** private:
+  22:Lib/Inc/A3921Driver.hpp ****     TIM_HandleTypeDef* timer;     // timer structure
+  23:Lib/Inc/A3921Driver.hpp ****     uint32_t channel;             // timer channel
+  24:Lib/Inc/A3921Driver.hpp ****     uint8_t direction;            // motor rotation direction
+  25:Lib/Inc/A3921Driver.hpp ****     GPIO_TypeDef* phase_port;     // GPIO port
+  26:Lib/Inc/A3921Driver.hpp ****     uint16_t phase_pin;           // GPIO pin
+  27:Lib/Inc/A3921Driver.hpp **** 
+  28:Lib/Inc/A3921Driver.hpp **** public:
+  29:Lib/Inc/A3921Driver.hpp ****     A3921Driver(TIM_HandleTypeDef* _timer, uint32_t _channel, uint8_t _direction, GPIO_TypeDef* _ph
+  49              		.loc 2 29 5 is_stmt 1 view .LVU3
+  50              	.LBB6:
+  51              	.LBB7:
+  30:Lib/Inc/A3921Driver.hpp ****         : timer(_timer), channel(_channel), direction(_direction), phase_port(_phase_port), phase_p
+  52              		.loc 2 30 11 is_stmt 0 view .LVU4
+  53 000e 064B     		ldr	r3, .L4
+  54 0010 064A     		ldr	r2, .L4+4
+  55 0012 1A60     		str	r2, [r3]
+  56              		.loc 2 30 26 view .LVU5
+  57 0014 0022     		movs	r2, #0
+  58 0016 5A60     		str	r2, [r3, #4]
+  59              		.loc 2 30 45 view .LVU6
+  60 0018 1A72     		strb	r2, [r3, #8]
+  61              		.loc 2 30 68 view .LVU7
+  62 001a 4FF09042 		mov	r2, #1207959552
+  63 001e DA60     		str	r2, [r3, #12]
+  64              		.loc 2 30 93 view .LVU8
+  65 0020 0422     		movs	r2, #4
+  66 0022 1A82     		strh	r2, [r3, #16]	@ movhi
+  67              	.LVL2:
+  68              		.loc 2 30 93 view .LVU9
+  69              	.LBE7:
+  70              	.LBE6:
+  71              	.LBE5:
+  72              		.loc 1 106 1 view .LVU10
+  73 0024 EEE7     		b	.L1
+  74              	.L5:
+  75 0026 00BF     		.align	2
+  76              	.L4:
+  77 0028 00000000 		.word	A3921DriverInstance
+  78 002c 00000000 		.word	htim2
+  79              		.cfi_endproc
+  80              	.LFE139:
+  81              		.cantunwind
+  82              		.fnend
+  84              		.section	.text._ZN10CANManager15CAN_FilterSetupEv,"ax",%progbits
+  85              		.align	1
+  86              		.global	_ZN10CANManager15CAN_FilterSetupEv
+  87              		.syntax unified
+  88              		.thumb
+  89              		.thumb_func
+  91              	_ZN10CANManager15CAN_FilterSetupEv:
+  92              		.fnstart
+  93              	.LVL3:
+  94              	.LFB135:
+  27:Module/Src/CANManager.cpp ****     Is_init = false;
+ARM GAS  C:\Users\hamuc\AppData\Local\Temp\cclhYHXF.s 			page 5
+
+
+  95              		.loc 1 27 1 is_stmt 1 view -0
+  96              		.cfi_startproc
+  97              		@ args = 0, pretend = 0, frame = 0
+  98              		@ frame_needed = 0, uses_anonymous_args = 0
+  27:Module/Src/CANManager.cpp ****     Is_init = false;
+  99              		.loc 1 27 1 is_stmt 0 view .LVU12
+ 100 0000 08B5     		push	{r3, lr}
+ 101              		.save {r3, lr}
+ 102              	.LCFI0:
+ 103              		.cfi_def_cfa_offset 8
+ 104              		.cfi_offset 3, -8
+ 105              		.cfi_offset 14, -4
+  28:Module/Src/CANManager.cpp **** 
+ 106              		.loc 1 28 5 is_stmt 1 view .LVU13
+  28:Module/Src/CANManager.cpp **** 
+ 107              		.loc 1 28 13 is_stmt 0 view .LVU14
+ 108 0002 0023     		movs	r3, #0
+ 109 0004 80F87830 		strb	r3, [r0, #120]
+  30:Module/Src/CANManager.cpp ****     sFilterConfig.FilterIndex = 0;
+ 110              		.loc 1 30 5 is_stmt 1 view .LVU15
+  30:Module/Src/CANManager.cpp ****     sFilterConfig.FilterIndex = 0;
+ 111              		.loc 1 30 26 is_stmt 0 view .LVU16
+ 112 0008 0366     		str	r3, [r0, #96]
+  31:Module/Src/CANManager.cpp ****     sFilterConfig.FilterType = FDCAN_FILTER_MASK;
+ 113              		.loc 1 31 5 is_stmt 1 view .LVU17
+  31:Module/Src/CANManager.cpp ****     sFilterConfig.FilterType = FDCAN_FILTER_MASK;
+ 114              		.loc 1 31 31 is_stmt 0 view .LVU18
+ 115 000a 4366     		str	r3, [r0, #100]
+  32:Module/Src/CANManager.cpp ****     sFilterConfig.FilterConfig = FDCAN_FILTER_TO_RXFIFO0;
+ 116              		.loc 1 32 5 is_stmt 1 view .LVU19
+  32:Module/Src/CANManager.cpp ****     sFilterConfig.FilterConfig = FDCAN_FILTER_TO_RXFIFO0;
+ 117              		.loc 1 32 30 is_stmt 0 view .LVU20
+ 118 000c 0222     		movs	r2, #2
+ 119 000e 8266     		str	r2, [r0, #104]
+  33:Module/Src/CANManager.cpp ****     sFilterConfig.FilterID1 = 0x000;
+ 120              		.loc 1 33 5 is_stmt 1 view .LVU21
+  33:Module/Src/CANManager.cpp ****     sFilterConfig.FilterID1 = 0x000;
+ 121              		.loc 1 33 32 is_stmt 0 view .LVU22
+ 122 0010 0122     		movs	r2, #1
+ 123 0012 C266     		str	r2, [r0, #108]
+  34:Module/Src/CANManager.cpp ****     sFilterConfig.FilterID2 = 0x000;
+ 124              		.loc 1 34 5 is_stmt 1 view .LVU23
+  34:Module/Src/CANManager.cpp ****     sFilterConfig.FilterID2 = 0x000;
+ 125              		.loc 1 34 29 is_stmt 0 view .LVU24
+ 126 0014 0367     		str	r3, [r0, #112]
+  35:Module/Src/CANManager.cpp **** 
+ 127              		.loc 1 35 5 is_stmt 1 view .LVU25
+  35:Module/Src/CANManager.cpp **** 
+ 128              		.loc 1 35 29 is_stmt 0 view .LVU26
+ 129 0016 4367     		str	r3, [r0, #116]
+  38:Module/Src/CANManager.cpp ****     {
+ 130              		.loc 1 38 5 is_stmt 1 view .LVU27
+  38:Module/Src/CANManager.cpp ****     {
+ 131              		.loc 1 38 30 is_stmt 0 view .LVU28
+ 132 0018 00F16001 		add	r1, r0, #96
+ 133 001c 0348     		ldr	r0, .L10
+ 134              	.LVL4:
+ARM GAS  C:\Users\hamuc\AppData\Local\Temp\cclhYHXF.s 			page 6
+
+
+  38:Module/Src/CANManager.cpp ****     {
+ 135              		.loc 1 38 30 view .LVU29
+ 136 001e FFF7FEFF 		bl	HAL_FDCAN_ConfigFilter
+ 137              	.LVL5:
+  38:Module/Src/CANManager.cpp ****     {
+ 138              		.loc 1 38 5 view .LVU30
+ 139 0022 00B9     		cbnz	r0, .L9
+ 140              	.L6:
+  42:Module/Src/CANManager.cpp **** 
+ 141              		.loc 1 42 1 view .LVU31
+ 142 0024 08BD     		pop	{r3, pc}
+ 143              	.L9:
+  40:Module/Src/CANManager.cpp ****     }
+ 144              		.loc 1 40 9 is_stmt 1 view .LVU32
+  40:Module/Src/CANManager.cpp ****     }
+ 145              		.loc 1 40 22 is_stmt 0 view .LVU33
+ 146 0026 FFF7FEFF 		bl	Error_Handler
+ 147              	.LVL6:
+  42:Module/Src/CANManager.cpp **** 
+ 148              		.loc 1 42 1 view .LVU34
+ 149 002a FBE7     		b	.L6
+ 150              	.L11:
+ 151              		.align	2
+ 152              	.L10:
+ 153 002c 00000000 		.word	hfdcan1
+ 154              		.cfi_endproc
+ 155              	.LFE135:
+ 156              		.fnend
+ 158              		.section	.rodata._ZN10CANManager9CAN_StartEv.str1.4,"aMS",%progbits,1
+ 159              		.align	2
+ 160              	.LC0:
+ 161 0000 43414E20 		.ascii	"CAN started!\012\000"
+ 161      73746172 
+ 161      74656421 
+ 161      0A00
+ 162              		.section	.text._ZN10CANManager9CAN_StartEv,"ax",%progbits
+ 163              		.align	1
+ 164              		.global	_ZN10CANManager9CAN_StartEv
+ 165              		.syntax unified
+ 166              		.thumb
+ 167              		.thumb_func
+ 169              	_ZN10CANManager9CAN_StartEv:
+ 170              		.fnstart
+ 171              	.LVL7:
+ 172              	.LFB136:
+  45:Module/Src/CANManager.cpp ****     if (HAL_FDCAN_ActivateNotification(&hfdcan1, FDCAN_IT_RX_FIFO0_NEW_MESSAGE, 0) != HAL_OK)
+ 173              		.loc 1 45 1 is_stmt 1 view -0
+ 174              		.cfi_startproc
+ 175              		@ args = 0, pretend = 0, frame = 16
+ 176              		@ frame_needed = 0, uses_anonymous_args = 0
+  45:Module/Src/CANManager.cpp ****     if (HAL_FDCAN_ActivateNotification(&hfdcan1, FDCAN_IT_RX_FIFO0_NEW_MESSAGE, 0) != HAL_OK)
+ 177              		.loc 1 45 1 is_stmt 0 view .LVU36
+ 178 0000 00B5     		push	{lr}
+ 179              		.save {lr}
+ 180              	.LCFI1:
+ 181              		.cfi_def_cfa_offset 4
+ 182              		.cfi_offset 14, -4
+ARM GAS  C:\Users\hamuc\AppData\Local\Temp\cclhYHXF.s 			page 7
+
+
+ 183              		.pad #20
+ 184 0002 85B0     		sub	sp, sp, #20
+ 185              	.LCFI2:
+ 186              		.cfi_def_cfa_offset 24
+  46:Module/Src/CANManager.cpp ****     {
+ 187              		.loc 1 46 5 is_stmt 1 view .LVU37
+  46:Module/Src/CANManager.cpp ****     {
+ 188              		.loc 1 46 39 is_stmt 0 view .LVU38
+ 189 0004 0022     		movs	r2, #0
+ 190 0006 0121     		movs	r1, #1
+ 191 0008 0F48     		ldr	r0, .L18
+ 192              	.LVL8:
+  46:Module/Src/CANManager.cpp ****     {
+ 193              		.loc 1 46 39 view .LVU39
+ 194 000a FFF7FEFF 		bl	HAL_FDCAN_ActivateNotification
+ 195              	.LVL9:
+  46:Module/Src/CANManager.cpp ****     {
+ 196              		.loc 1 46 5 view .LVU40
+ 197 000e A0B9     		cbnz	r0, .L16
+ 198              	.L13:
+  51:Module/Src/CANManager.cpp ****     {
+ 199              		.loc 1 51 5 is_stmt 1 view .LVU41
+  51:Module/Src/CANManager.cpp ****     {
+ 200              		.loc 1 51 23 is_stmt 0 view .LVU42
+ 201 0010 0D48     		ldr	r0, .L18
+ 202 0012 FFF7FEFF 		bl	HAL_FDCAN_Start
+ 203              	.LVL10:
+  51:Module/Src/CANManager.cpp ****     {
+ 204              		.loc 1 51 5 view .LVU43
+ 205 0016 98B9     		cbnz	r0, .L17
+ 206              	.L14:
+  56:Module/Src/CANManager.cpp ****     HAL_UART_Transmit(&huart3,CANINITMSG,sizeof(CANINITMSG),HAL_MAX_DELAY);
+ 207              		.loc 1 56 5 is_stmt 1 view .LVU44
+  56:Module/Src/CANManager.cpp ****     HAL_UART_Transmit(&huart3,CANINITMSG,sizeof(CANINITMSG),HAL_MAX_DELAY);
+ 208              		.loc 1 56 13 is_stmt 0 view .LVU45
+ 209 0018 0C4B     		ldr	r3, .L18+4
+ 210 001a EC46     		mov	ip, sp
+ 211 001c 0FCB     		ldm	r3, {r0, r1, r2, r3}
+ 212 001e ACE80700 		stmia	ip!, {r0, r1, r2}
+ 213 0022 ACF80030 		strh	r3, [ip]	@ movhi
+  57:Module/Src/CANManager.cpp **** }
+ 214              		.loc 1 57 5 is_stmt 1 view .LVU46
+  57:Module/Src/CANManager.cpp **** }
+ 215              		.loc 1 57 22 is_stmt 0 view .LVU47
+ 216 0026 4FF0FF33 		mov	r3, #-1
+ 217 002a 0E22     		movs	r2, #14
+ 218 002c 6946     		mov	r1, sp
+ 219 002e 0848     		ldr	r0, .L18+8
+ 220 0030 FFF7FEFF 		bl	HAL_UART_Transmit
+ 221              	.LVL11:
+  58:Module/Src/CANManager.cpp **** 
+ 222              		.loc 1 58 1 view .LVU48
+ 223 0034 05B0     		add	sp, sp, #20
+ 224              	.LCFI3:
+ 225              		.cfi_remember_state
+ 226              		.cfi_def_cfa_offset 4
+ 227              		@ sp needed
+ARM GAS  C:\Users\hamuc\AppData\Local\Temp\cclhYHXF.s 			page 8
+
+
+ 228 0036 5DF804FB 		ldr	pc, [sp], #4
+ 229              	.L16:
+ 230              	.LCFI4:
+ 231              		.cfi_restore_state
+  48:Module/Src/CANManager.cpp ****     }
+ 232              		.loc 1 48 9 is_stmt 1 view .LVU49
+  48:Module/Src/CANManager.cpp ****     }
+ 233              		.loc 1 48 22 is_stmt 0 view .LVU50
+ 234 003a FFF7FEFF 		bl	Error_Handler
+ 235              	.LVL12:
+ 236 003e E7E7     		b	.L13
+ 237              	.L17:
+  53:Module/Src/CANManager.cpp ****     }
+ 238              		.loc 1 53 9 is_stmt 1 view .LVU51
+  53:Module/Src/CANManager.cpp ****     }
+ 239              		.loc 1 53 22 is_stmt 0 view .LVU52
+ 240 0040 FFF7FEFF 		bl	Error_Handler
+ 241              	.LVL13:
+ 242 0044 E8E7     		b	.L14
+ 243              	.L19:
+ 244 0046 00BF     		.align	2
+ 245              	.L18:
+ 246 0048 00000000 		.word	hfdcan1
+ 247 004c 00000000 		.word	.LC0
+ 248 0050 00000000 		.word	huart3
+ 249              		.cfi_endproc
+ 250              	.LFE136:
+ 251              		.fnend
+ 253              		.section	.text._ZN10CANManager14CAN_Start_SendEh,"ax",%progbits
+ 254              		.align	1
+ 255              		.global	_ZN10CANManager14CAN_Start_SendEh
+ 256              		.syntax unified
+ 257              		.thumb
+ 258              		.thumb_func
+ 260              	_ZN10CANManager14CAN_Start_SendEh:
+ 261              		.fnstart
+ 262              	.LVL14:
+ 263              	.LFB137:
+  61:Module/Src/CANManager.cpp ****     TxHeader.Identifier = id;
+ 264              		.loc 1 61 1 is_stmt 1 view -0
+ 265              		.cfi_startproc
+ 266              		@ args = 0, pretend = 0, frame = 0
+ 267              		@ frame_needed = 0, uses_anonymous_args = 0
+  61:Module/Src/CANManager.cpp ****     TxHeader.Identifier = id;
+ 268              		.loc 1 61 1 is_stmt 0 view .LVU54
+ 269 0000 08B5     		push	{r3, lr}
+ 270              		.save {r3, lr}
+ 271              	.LCFI5:
+ 272              		.cfi_def_cfa_offset 8
+ 273              		.cfi_offset 3, -8
+ 274              		.cfi_offset 14, -4
+  62:Module/Src/CANManager.cpp ****     TxHeader.IdType = FDCAN_STANDARD_ID;
+ 275              		.loc 1 62 5 is_stmt 1 view .LVU55
+  62:Module/Src/CANManager.cpp ****     TxHeader.IdType = FDCAN_STANDARD_ID;
+ 276              		.loc 1 62 25 is_stmt 0 view .LVU56
+ 277 0002 0160     		str	r1, [r0]
+  63:Module/Src/CANManager.cpp ****     TxHeader.TxFrameType = FDCAN_DATA_FRAME;
+ARM GAS  C:\Users\hamuc\AppData\Local\Temp\cclhYHXF.s 			page 9
+
+
+ 278              		.loc 1 63 5 is_stmt 1 view .LVU57
+  63:Module/Src/CANManager.cpp ****     TxHeader.TxFrameType = FDCAN_DATA_FRAME;
+ 279              		.loc 1 63 21 is_stmt 0 view .LVU58
+ 280 0004 0023     		movs	r3, #0
+ 281 0006 4360     		str	r3, [r0, #4]
+  64:Module/Src/CANManager.cpp ****     TxHeader.DataLength = FDCAN_DLC_BYTES_8;
+ 282              		.loc 1 64 5 is_stmt 1 view .LVU59
+  64:Module/Src/CANManager.cpp ****     TxHeader.DataLength = FDCAN_DLC_BYTES_8;
+ 283              		.loc 1 64 26 is_stmt 0 view .LVU60
+ 284 0008 8360     		str	r3, [r0, #8]
+  65:Module/Src/CANManager.cpp ****     TxHeader.ErrorStateIndicator = FDCAN_ESI_ACTIVE;
+ 285              		.loc 1 65 5 is_stmt 1 view .LVU61
+  65:Module/Src/CANManager.cpp ****     TxHeader.ErrorStateIndicator = FDCAN_ESI_ACTIVE;
+ 286              		.loc 1 65 25 is_stmt 0 view .LVU62
+ 287 000a 4FF40022 		mov	r2, #524288
+ 288 000e C260     		str	r2, [r0, #12]
+  66:Module/Src/CANManager.cpp ****     TxHeader.BitRateSwitch = FDCAN_BRS_OFF;
+ 289              		.loc 1 66 5 is_stmt 1 view .LVU63
+  66:Module/Src/CANManager.cpp ****     TxHeader.BitRateSwitch = FDCAN_BRS_OFF;
+ 290              		.loc 1 66 34 is_stmt 0 view .LVU64
+ 291 0010 0361     		str	r3, [r0, #16]
+  67:Module/Src/CANManager.cpp ****     TxHeader.FDFormat = FDCAN_CLASSIC_CAN;
+ 292              		.loc 1 67 5 is_stmt 1 view .LVU65
+  67:Module/Src/CANManager.cpp ****     TxHeader.FDFormat = FDCAN_CLASSIC_CAN;
+ 293              		.loc 1 67 28 is_stmt 0 view .LVU66
+ 294 0012 4361     		str	r3, [r0, #20]
+  68:Module/Src/CANManager.cpp ****     TxHeader.TxEventFifoControl = FDCAN_NO_TX_EVENTS;
+ 295              		.loc 1 68 5 is_stmt 1 view .LVU67
+  68:Module/Src/CANManager.cpp ****     TxHeader.TxEventFifoControl = FDCAN_NO_TX_EVENTS;
+ 296              		.loc 1 68 23 is_stmt 0 view .LVU68
+ 297 0014 8361     		str	r3, [r0, #24]
+  69:Module/Src/CANManager.cpp ****     TxHeader.MessageMarker = 0;
+ 298              		.loc 1 69 5 is_stmt 1 view .LVU69
+  69:Module/Src/CANManager.cpp ****     TxHeader.MessageMarker = 0;
+ 299              		.loc 1 69 33 is_stmt 0 view .LVU70
+ 300 0016 C361     		str	r3, [r0, #28]
+  70:Module/Src/CANManager.cpp **** 
+ 301              		.loc 1 70 5 is_stmt 1 view .LVU71
+  70:Module/Src/CANManager.cpp **** 
+ 302              		.loc 1 70 28 is_stmt 0 view .LVU72
+ 303 0018 0362     		str	r3, [r0, #32]
+  72:Module/Src/CANManager.cpp ****     {
+ 304              		.loc 1 72 5 is_stmt 1 view .LVU73
+  72:Module/Src/CANManager.cpp ****     {
+ 305              		.loc 1 72 38 is_stmt 0 view .LVU74
+ 306 001a 00F14C02 		add	r2, r0, #76
+ 307 001e 0146     		mov	r1, r0
+ 308              	.LVL15:
+  72:Module/Src/CANManager.cpp ****     {
+ 309              		.loc 1 72 38 view .LVU75
+ 310 0020 0648     		ldr	r0, .L25
+ 311              	.LVL16:
+  72:Module/Src/CANManager.cpp ****     {
+ 312              		.loc 1 72 38 view .LVU76
+ 313 0022 FFF7FEFF 		bl	HAL_FDCAN_AddMessageToTxFifoQ
+ 314              	.LVL17:
+  72:Module/Src/CANManager.cpp ****     {
+ARM GAS  C:\Users\hamuc\AppData\Local\Temp\cclhYHXF.s 			page 10
+
+
+ 315              		.loc 1 72 5 view .LVU77
+ 316 0026 28B9     		cbnz	r0, .L24
+ 317              	.L22:
+  77:Module/Src/CANManager.cpp **** }
+ 318              		.loc 1 77 50 is_stmt 1 discriminator 1 view .LVU78
+  77:Module/Src/CANManager.cpp **** }
+ 319              		.loc 1 77 39 is_stmt 0 discriminator 1 view .LVU79
+ 320 0028 0448     		ldr	r0, .L25
+ 321 002a FFF7FEFF 		bl	HAL_FDCAN_GetTxFifoFreeLevel
+ 322              	.LVL18:
+  77:Module/Src/CANManager.cpp **** }
+ 323              		.loc 1 77 50 discriminator 1 view .LVU80
+ 324 002e 0328     		cmp	r0, #3
+ 325 0030 FAD1     		bne	.L22
+  78:Module/Src/CANManager.cpp **** 
+ 326              		.loc 1 78 1 view .LVU81
+ 327 0032 08BD     		pop	{r3, pc}
+ 328              	.L24:
+  74:Module/Src/CANManager.cpp ****     }
+ 329              		.loc 1 74 9 is_stmt 1 view .LVU82
+  74:Module/Src/CANManager.cpp ****     }
+ 330              		.loc 1 74 22 is_stmt 0 view .LVU83
+ 331 0034 FFF7FEFF 		bl	Error_Handler
+ 332              	.LVL19:
+ 333 0038 F6E7     		b	.L22
+ 334              	.L26:
+ 335 003a 00BF     		.align	2
+ 336              	.L25:
+ 337 003c 00000000 		.word	hfdcan1
+ 338              		.cfi_endproc
+ 339              	.LFE137:
+ 340              		.fnend
+ 342              		.section	.text._ZN10CANManager18Rcv_Init_with_confEv,"ax",%progbits
+ 343              		.align	1
+ 344              		.global	_ZN10CANManager18Rcv_Init_with_confEv
+ 345              		.syntax unified
+ 346              		.thumb
+ 347              		.thumb_func
+ 349              	_ZN10CANManager18Rcv_Init_with_confEv:
+ 350              		.fnstart
+ 351              	.LVL20:
+ 352              	.LFB138:
+ 104:Module/Src/CANManager.cpp ****     Is_init = true;
+ 353              		.loc 1 104 1 is_stmt 1 view -0
+ 354              		.cfi_startproc
+ 355              		@ args = 0, pretend = 0, frame = 0
+ 356              		@ frame_needed = 0, uses_anonymous_args = 0
+ 357              		@ link register save eliminated.
+ 105:Module/Src/CANManager.cpp **** }
+ 358              		.loc 1 105 5 view .LVU85
+ 105:Module/Src/CANManager.cpp **** }
+ 359              		.loc 1 105 13 is_stmt 0 view .LVU86
+ 360 0000 0123     		movs	r3, #1
+ 361 0002 80F87830 		strb	r3, [r0, #120]
+ 362              		.loc 1 106 1 view .LVU87
+ 363 0006 7047     		bx	lr
+ 364              		.cfi_endproc
+ARM GAS  C:\Users\hamuc\AppData\Local\Temp\cclhYHXF.s 			page 11
+
+
+ 365              	.LFE138:
+ 366              		.cantunwind
+ 367              		.fnend
+ 369              		.section	.text._GLOBAL__sub_I_A3921DriverInstance,"ax",%progbits
+ 370              		.align	1
+ 371              		.syntax unified
+ 372              		.thumb
+ 373              		.thumb_func
+ 375              	_GLOBAL__sub_I_A3921DriverInstance:
+ 376              		.fnstart
+ 377              	.LFB140:
+ 378              		.loc 1 106 1 is_stmt 1 view -0
+ 379              		.cfi_startproc
+ 380              		@ args = 0, pretend = 0, frame = 0
+ 381              		@ frame_needed = 0, uses_anonymous_args = 0
+ 382 0000 08B5     		push	{r3, lr}
+ 383              	.LCFI6:
+ 384              		.cfi_def_cfa_offset 8
+ 385              		.cfi_offset 3, -8
+ 386              		.cfi_offset 14, -4
+ 387              		.loc 1 106 1 is_stmt 0 view .LVU89
+ 388 0002 4FF6FF71 		movw	r1, #65535
+ 389 0006 0120     		movs	r0, #1
+ 390 0008 FFF7FEFF 		bl	_Z41__static_initialization_and_destruction_0ii
+ 391              	.LVL21:
+ 392 000c 08BD     		pop	{r3, pc}
+ 393              		.cfi_endproc
+ 394              	.LFE140:
+ 395              		.cantunwind
+ 396              		.fnend
+ 398              		.section	.init_array,"aw",%init_array
+ 399              		.align	2
+ 400 0000 00000000 		.word	_GLOBAL__sub_I_A3921DriverInstance(target1)
+ 401              		.global	_ZN10CANManager18STATUS_RESPONSE_IDE
+ 402              		.section	.rodata._ZN10CANManager18STATUS_RESPONSE_IDE,"a"
+ 403              		.align	1
+ 406              	_ZN10CANManager18STATUS_RESPONSE_IDE:
+ 407 0000 3100     		.short	49
+ 408              		.global	_ZN10CANManager17STATUS_REQUEST_IDE
+ 409              		.section	.rodata._ZN10CANManager17STATUS_REQUEST_IDE,"a"
+ 410              		.align	1
+ 413              	_ZN10CANManager17STATUS_REQUEST_IDE:
+ 414 0000 3000     		.short	48
+ 415              		.global	_ZN10CANManager9MOTOR_RUNE
+ 416              		.section	.rodata._ZN10CANManager9MOTOR_RUNE,"a"
+ 417              		.align	1
+ 420              	_ZN10CANManager9MOTOR_RUNE:
+ 421 0000 2000     		.short	32
+ 422              		.global	_ZN10CANManager16INIT_RESPONSE_IDE
+ 423              		.section	.rodata._ZN10CANManager16INIT_RESPONSE_IDE,"a"
+ 424              		.align	1
+ 427              	_ZN10CANManager16INIT_RESPONSE_IDE:
+ 428 0000 1100     		.short	17
+ 429              		.global	_ZN10CANManager17INIT_WITH_CONF_IDE
+ 430              		.section	.rodata._ZN10CANManager17INIT_WITH_CONF_IDE,"a"
+ 431              		.align	1
+ 434              	_ZN10CANManager17INIT_WITH_CONF_IDE:
+ARM GAS  C:\Users\hamuc\AppData\Local\Temp\cclhYHXF.s 			page 12
+
+
+ 435 0000 FF00     		.short	255
+ 436              		.global	_ZN10CANManager24OVERHEAT_NOTIFICATION_IDE
+ 437              		.section	.rodata._ZN10CANManager24OVERHEAT_NOTIFICATION_IDE,"a"
+ 438              		.align	1
+ 441              	_ZN10CANManager24OVERHEAT_NOTIFICATION_IDE:
+ 442 0000 4100     		.short	65
+ 443              		.global	_ZN10CANManager19OCD_NOTIFICATION_IDE
+ 444              		.section	.rodata._ZN10CANManager19OCD_NOTIFICATION_IDE,"a"
+ 445              		.align	1
+ 448              	_ZN10CANManager19OCD_NOTIFICATION_IDE:
+ 449 0000 4000     		.short	64
+ 450              		.global	_ZN10CANManager16STOP_RESPONSE_IDE
+ 451              		.section	.rodata._ZN10CANManager16STOP_RESPONSE_IDE,"a"
+ 452              		.align	1
+ 455              	_ZN10CANManager16STOP_RESPONSE_IDE:
+ 456 0000 1000     		.short	16
+ 457              		.global	_ZN10CANManager15STOP_COMMAND_IDE
+ 458              		.section	.rodata._ZN10CANManager15STOP_COMMAND_IDE,"a"
+ 459              		.align	1
+ 462              	_ZN10CANManager15STOP_COMMAND_IDE:
+ 463 0000 5505     		.short	1365
+ 464              		.global	A3921DriverInstance
+ 465              		.section	.bss.A3921DriverInstance,"aw",%nobits
+ 466              		.align	2
+ 469              	A3921DriverInstance:
+ 470 0000 00000000 		.space	20
+ 470      00000000 
+ 470      00000000 
+ 470      00000000 
+ 470      00000000 
+ 471              		.text
+ 472              	.Letext0:
+ 473              		.file 3 "c:\\program files (x86)\\arm gnu toolchain arm-none-eabi\\12.3 rel1\\arm-none-eabi\\inclu
+ 474              		.file 4 "c:\\program files (x86)\\arm gnu toolchain arm-none-eabi\\12.3 rel1\\arm-none-eabi\\inclu
+ 475              		.file 5 "Drivers/CMSIS/Device/ST/STM32G4xx/Include/stm32g431xx.h"
+ 476              		.file 6 "Drivers/CMSIS/Device/ST/STM32G4xx/Include/stm32g4xx.h"
+ 477              		.file 7 "Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_def.h"
+ 478              		.file 8 "Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_dma.h"
+ 479              		.file 9 "Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_fdcan.h"
+ 480              		.file 10 "Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_tim.h"
+ 481              		.file 11 "Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_uart.h"
+ 482              		.file 12 "Core/Inc/tim.h"
+ 483              		.file 13 "Core/Inc/fdcan.h"
+ 484              		.file 14 "Core/Inc/usart.h"
+ 485              		.file 15 "Module/Inc/CANManager.hpp"
+ 486              		.file 16 "Core/Inc/main.h"
+ARM GAS  C:\Users\hamuc\AppData\Local\Temp\cclhYHXF.s 			page 13
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 CANManager.cpp
+C:\Users\hamuc\AppData\Local\Temp\cclhYHXF.s:21     .text._Z41__static_initialization_and_destruction_0ii:00000000 $t
+C:\Users\hamuc\AppData\Local\Temp\cclhYHXF.s:26     .text._Z41__static_initialization_and_destruction_0ii:00000000 _Z41__static_initialization_and_destruction_0ii
+C:\Users\hamuc\AppData\Local\Temp\cclhYHXF.s:77     .text._Z41__static_initialization_and_destruction_0ii:00000028 $d
+C:\Users\hamuc\AppData\Local\Temp\cclhYHXF.s:469    .bss.A3921DriverInstance:00000000 A3921DriverInstance
+.ARM.exidx.text._Z41__static_initialization_and_destruction_0ii:00000000 $d
+C:\Users\hamuc\AppData\Local\Temp\cclhYHXF.s:85     .text._ZN10CANManager15CAN_FilterSetupEv:00000000 $t
+C:\Users\hamuc\AppData\Local\Temp\cclhYHXF.s:91     .text._ZN10CANManager15CAN_FilterSetupEv:00000000 _ZN10CANManager15CAN_FilterSetupEv
+C:\Users\hamuc\AppData\Local\Temp\cclhYHXF.s:153    .text._ZN10CANManager15CAN_FilterSetupEv:0000002c $d
+.ARM.extab.text._ZN10CANManager15CAN_FilterSetupEv:00000000 $d
+.ARM.exidx.text._ZN10CANManager15CAN_FilterSetupEv:00000000 $d
+C:\Users\hamuc\AppData\Local\Temp\cclhYHXF.s:159    .rodata._ZN10CANManager9CAN_StartEv.str1.4:00000000 $d
+C:\Users\hamuc\AppData\Local\Temp\cclhYHXF.s:163    .text._ZN10CANManager9CAN_StartEv:00000000 $t
+C:\Users\hamuc\AppData\Local\Temp\cclhYHXF.s:169    .text._ZN10CANManager9CAN_StartEv:00000000 _ZN10CANManager9CAN_StartEv
+C:\Users\hamuc\AppData\Local\Temp\cclhYHXF.s:246    .text._ZN10CANManager9CAN_StartEv:00000048 $d
+.ARM.exidx.text._ZN10CANManager9CAN_StartEv:00000000 $d
+C:\Users\hamuc\AppData\Local\Temp\cclhYHXF.s:254    .text._ZN10CANManager14CAN_Start_SendEh:00000000 $t
+C:\Users\hamuc\AppData\Local\Temp\cclhYHXF.s:260    .text._ZN10CANManager14CAN_Start_SendEh:00000000 _ZN10CANManager14CAN_Start_SendEh
+C:\Users\hamuc\AppData\Local\Temp\cclhYHXF.s:337    .text._ZN10CANManager14CAN_Start_SendEh:0000003c $d
+.ARM.extab.text._ZN10CANManager14CAN_Start_SendEh:00000000 $d
+.ARM.exidx.text._ZN10CANManager14CAN_Start_SendEh:00000000 $d
+C:\Users\hamuc\AppData\Local\Temp\cclhYHXF.s:343    .text._ZN10CANManager18Rcv_Init_with_confEv:00000000 $t
+C:\Users\hamuc\AppData\Local\Temp\cclhYHXF.s:349    .text._ZN10CANManager18Rcv_Init_with_confEv:00000000 _ZN10CANManager18Rcv_Init_with_confEv
+.ARM.exidx.text._ZN10CANManager18Rcv_Init_with_confEv:00000000 $d
+C:\Users\hamuc\AppData\Local\Temp\cclhYHXF.s:370    .text._GLOBAL__sub_I_A3921DriverInstance:00000000 $t
+C:\Users\hamuc\AppData\Local\Temp\cclhYHXF.s:375    .text._GLOBAL__sub_I_A3921DriverInstance:00000000 _GLOBAL__sub_I_A3921DriverInstance
+.ARM.exidx.text._GLOBAL__sub_I_A3921DriverInstance:00000000 $d
+C:\Users\hamuc\AppData\Local\Temp\cclhYHXF.s:399    .init_array:00000000 $d
+C:\Users\hamuc\AppData\Local\Temp\cclhYHXF.s:406    .rodata._ZN10CANManager18STATUS_RESPONSE_IDE:00000000 _ZN10CANManager18STATUS_RESPONSE_IDE
+C:\Users\hamuc\AppData\Local\Temp\cclhYHXF.s:403    .rodata._ZN10CANManager18STATUS_RESPONSE_IDE:00000000 $d
+C:\Users\hamuc\AppData\Local\Temp\cclhYHXF.s:413    .rodata._ZN10CANManager17STATUS_REQUEST_IDE:00000000 _ZN10CANManager17STATUS_REQUEST_IDE
+C:\Users\hamuc\AppData\Local\Temp\cclhYHXF.s:410    .rodata._ZN10CANManager17STATUS_REQUEST_IDE:00000000 $d
+C:\Users\hamuc\AppData\Local\Temp\cclhYHXF.s:420    .rodata._ZN10CANManager9MOTOR_RUNE:00000000 _ZN10CANManager9MOTOR_RUNE
+C:\Users\hamuc\AppData\Local\Temp\cclhYHXF.s:417    .rodata._ZN10CANManager9MOTOR_RUNE:00000000 $d
+C:\Users\hamuc\AppData\Local\Temp\cclhYHXF.s:427    .rodata._ZN10CANManager16INIT_RESPONSE_IDE:00000000 _ZN10CANManager16INIT_RESPONSE_IDE
+C:\Users\hamuc\AppData\Local\Temp\cclhYHXF.s:424    .rodata._ZN10CANManager16INIT_RESPONSE_IDE:00000000 $d
+C:\Users\hamuc\AppData\Local\Temp\cclhYHXF.s:434    .rodata._ZN10CANManager17INIT_WITH_CONF_IDE:00000000 _ZN10CANManager17INIT_WITH_CONF_IDE
+C:\Users\hamuc\AppData\Local\Temp\cclhYHXF.s:431    .rodata._ZN10CANManager17INIT_WITH_CONF_IDE:00000000 $d
+C:\Users\hamuc\AppData\Local\Temp\cclhYHXF.s:441    .rodata._ZN10CANManager24OVERHEAT_NOTIFICATION_IDE:00000000 _ZN10CANManager24OVERHEAT_NOTIFICATION_IDE
+C:\Users\hamuc\AppData\Local\Temp\cclhYHXF.s:438    .rodata._ZN10CANManager24OVERHEAT_NOTIFICATION_IDE:00000000 $d
+C:\Users\hamuc\AppData\Local\Temp\cclhYHXF.s:448    .rodata._ZN10CANManager19OCD_NOTIFICATION_IDE:00000000 _ZN10CANManager19OCD_NOTIFICATION_IDE
+C:\Users\hamuc\AppData\Local\Temp\cclhYHXF.s:445    .rodata._ZN10CANManager19OCD_NOTIFICATION_IDE:00000000 $d
+C:\Users\hamuc\AppData\Local\Temp\cclhYHXF.s:455    .rodata._ZN10CANManager16STOP_RESPONSE_IDE:00000000 _ZN10CANManager16STOP_RESPONSE_IDE
+C:\Users\hamuc\AppData\Local\Temp\cclhYHXF.s:452    .rodata._ZN10CANManager16STOP_RESPONSE_IDE:00000000 $d
+C:\Users\hamuc\AppData\Local\Temp\cclhYHXF.s:462    .rodata._ZN10CANManager15STOP_COMMAND_IDE:00000000 _ZN10CANManager15STOP_COMMAND_IDE
+C:\Users\hamuc\AppData\Local\Temp\cclhYHXF.s:459    .rodata._ZN10CANManager15STOP_COMMAND_IDE:00000000 $d
+C:\Users\hamuc\AppData\Local\Temp\cclhYHXF.s:466    .bss.A3921DriverInstance:00000000 $d
+
+UNDEFINED SYMBOLS
+htim2
+HAL_FDCAN_ConfigFilter
+Error_Handler
+hfdcan1
+__aeabi_unwind_cpp_pr1
+HAL_FDCAN_ActivateNotification
+HAL_FDCAN_Start
+ARM GAS  C:\Users\hamuc\AppData\Local\Temp\cclhYHXF.s 			page 14
+
+
+HAL_UART_Transmit
+huart3
+__aeabi_unwind_cpp_pr0
+HAL_FDCAN_AddMessageToTxFifoQ
+HAL_FDCAN_GetTxFifoFreeLevel

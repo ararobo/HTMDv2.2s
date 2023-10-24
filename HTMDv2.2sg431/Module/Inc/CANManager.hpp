@@ -13,6 +13,7 @@
 #include "main.h"
 #include "tim.h"
 #include "fdcan.h"
+#include "usart.h"
 #include "A3921Driver.hpp"
 
 extern A3921Driver A3921DriverInstance;
@@ -45,7 +46,7 @@ public:
     void CAN_FilterSetup();
     void CAN_Start();
     void CAN_Start_Send(uint8_t id);
-    void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo0ITs);
+    //void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo0ITs);
 };
 
 #endif // CAN_MANAGER_HPP

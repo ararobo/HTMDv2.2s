@@ -1,0 +1,316 @@
+ARM GAS  C:\Users\hamuc\AppData\Local\Temp\ccs9ZHXh.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"A3921Driver.cpp"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.file 1 "Lib/Src/A3921Driver.cpp"
+  20              		.section	.text._ZN11A3921Driver4initEv,"ax",%progbits
+  21              		.align	1
+  22              		.global	_ZN11A3921Driver4initEv
+  23              		.syntax unified
+  24              		.thumb
+  25              		.thumb_func
+  27              	_ZN11A3921Driver4initEv:
+  28              		.fnstart
+  29              	.LVL0:
+  30              	.LFB1071:
+   1:Lib/Src/A3921Driver.cpp **** /**
+   2:Lib/Src/A3921Driver.cpp ****   ******************************************************************************
+   3:Lib/Src/A3921Driver.cpp ****   * @file    A3921Driver.cpp
+   4:Lib/Src/A3921Driver.cpp ****   * @brief   A3921駆動用のプログラム
+   5:Lib/Src/A3921Driver.cpp ****   * @author @hamuchan214
+   6:Lib/Src/A3921Driver.cpp ****   * @date 2023/10/11
+   7:Lib/Src/A3921Driver.cpp ****   ******************************************************************************
+   8:Lib/Src/A3921Driver.cpp **** **/
+   9:Lib/Src/A3921Driver.cpp **** 
+  10:Lib/Src/A3921Driver.cpp **** // A3921_motor.cpp
+  11:Lib/Src/A3921Driver.cpp **** 
+  12:Lib/Src/A3921Driver.cpp **** #include "A3921Driver.hpp"
+  13:Lib/Src/A3921Driver.cpp **** #include <cmath>
+  14:Lib/Src/A3921Driver.cpp **** 
+  15:Lib/Src/A3921Driver.cpp **** void A3921Driver::init() {
+  31              		.loc 1 15 26 view -0
+  32              		.cfi_startproc
+  33              		@ args = 0, pretend = 0, frame = 0
+  34              		@ frame_needed = 0, uses_anonymous_args = 0
+  35              		.loc 1 15 26 is_stmt 0 view .LVU1
+  36 0000 08B5     		push	{r3, lr}
+  37              		.save {r3, lr}
+  38              	.LCFI0:
+  39              		.cfi_def_cfa_offset 8
+  40              		.cfi_offset 3, -8
+  41              		.cfi_offset 14, -4
+  16:Lib/Src/A3921Driver.cpp ****     // Start PWM for motor
+  17:Lib/Src/A3921Driver.cpp ****     HAL_TIM_PWM_Start(timer, channel);
+ARM GAS  C:\Users\hamuc\AppData\Local\Temp\ccs9ZHXh.s 			page 2
+
+
+  42              		.loc 1 17 5 is_stmt 1 view .LVU2
+  43              		.loc 1 17 22 is_stmt 0 view .LVU3
+  44 0002 4168     		ldr	r1, [r0, #4]
+  45 0004 0068     		ldr	r0, [r0]
+  46              	.LVL1:
+  47              		.loc 1 17 22 view .LVU4
+  48 0006 FFF7FEFF 		bl	HAL_TIM_PWM_Start
+  49              	.LVL2:
+  18:Lib/Src/A3921Driver.cpp **** }
+  50              		.loc 1 18 1 view .LVU5
+  51 000a 08BD     		pop	{r3, pc}
+  52              		.cfi_endproc
+  53              	.LFE1071:
+  54              		.fnend
+  56              		.section	.text._ZN11A3921Driver3runEf,"ax",%progbits
+  57              		.align	1
+  58              		.global	_ZN11A3921Driver3runEf
+  59              		.syntax unified
+  60              		.thumb
+  61              		.thumb_func
+  63              	_ZN11A3921Driver3runEf:
+  64              		.fnstart
+  65              	.LVL3:
+  66              	.LFB1072:
+  19:Lib/Src/A3921Driver.cpp **** 
+  20:Lib/Src/A3921Driver.cpp **** void A3921Driver::run(float speed) {
+  67              		.loc 1 20 36 is_stmt 1 view -0
+  68              		.cfi_startproc
+  69              		@ args = 0, pretend = 0, frame = 0
+  70              		@ frame_needed = 0, uses_anonymous_args = 0
+  21:Lib/Src/A3921Driver.cpp ****     // Check if absolute speed value is less than or equal to 1
+  22:Lib/Src/A3921Driver.cpp ****     if (fabsf(speed) <= 1.0f)
+  71              		.loc 1 22 5 view .LVU7
+  72              	.LBB2:
+  73              		.loc 1 22 14 is_stmt 0 view .LVU8
+  74 0000 B0EEC07A 		vabs.f32	s14, s0
+  75              		.loc 1 22 5 view .LVU9
+  76 0004 F7EE007A 		vmov.f32	s15, #1.0e+0
+  77 0008 B4EEE77A 		vcmpe.f32	s14, s15
+  78 000c F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+  79 0010 00D9     		bls	.L20
+  80 0012 7047     		bx	lr
+  81              	.L20:
+  82              	.LBE2:
+  20:Lib/Src/A3921Driver.cpp ****     // Check if absolute speed value is less than or equal to 1
+  83              		.loc 1 20 36 view .LVU10
+  84 0014 10B5     		push	{r4, lr}
+  85              		.save {r4, lr}
+  86              	.LCFI1:
+  87              		.cfi_def_cfa_offset 8
+  88              		.cfi_offset 4, -8
+  89              		.cfi_offset 14, -4
+  90 0016 2DED028B 		vpush.64	{d8}
+  91              		.vsave {d8}
+  92              	.LCFI2:
+  93              		.cfi_def_cfa_offset 16
+  94              		.cfi_offset 80, -16
+ARM GAS  C:\Users\hamuc\AppData\Local\Temp\ccs9ZHXh.s 			page 3
+
+
+  95              		.cfi_offset 81, -12
+  96 001a 0446     		mov	r4, r0
+  97 001c B0EE408A 		vmov.f32	s16, s0
+  98              	.LBB5:
+  99              	.LBB3:
+  23:Lib/Src/A3921Driver.cpp ****     {
+  24:Lib/Src/A3921Driver.cpp ****         // Set motor direction based on speed and direction
+  25:Lib/Src/A3921Driver.cpp ****         if ((speed >= 0.0f) ^ direction)
+ 100              		.loc 1 25 9 is_stmt 1 view .LVU11
+ 101              		.loc 1 25 20 is_stmt 0 view .LVU12
+ 102 0020 B5EEC00A 		vcmpe.f32	s0, #0
+ 103 0024 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 104 0028 ACBF     		ite	ge
+ 105 002a 0122     		movge	r2, #1
+ 106 002c 0022     		movlt	r2, #0
+ 107              		.loc 1 25 31 view .LVU13
+ 108 002e 037A     		ldrb	r3, [r0, #8]	@ zero_extendqisi2
+ 109              		.loc 1 25 9 view .LVU14
+ 110 0030 9A42     		cmp	r2, r3
+ 111 0032 17D0     		beq	.L6
+  26:Lib/Src/A3921Driver.cpp ****         {
+  27:Lib/Src/A3921Driver.cpp ****             HAL_GPIO_WritePin(phase_port, phase_pin, GPIO_PIN_SET);
+ 112              		.loc 1 27 13 is_stmt 1 view .LVU15
+ 113              		.loc 1 27 30 is_stmt 0 view .LVU16
+ 114 0034 0122     		movs	r2, #1
+ 115 0036 018A     		ldrh	r1, [r0, #16]
+ 116 0038 C068     		ldr	r0, [r0, #12]
+ 117              	.LVL4:
+ 118              		.loc 1 27 30 view .LVU17
+ 119 003a FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 120              	.LVL5:
+ 121              	.L7:
+  28:Lib/Src/A3921Driver.cpp ****         } else
+  29:Lib/Src/A3921Driver.cpp ****         {
+  30:Lib/Src/A3921Driver.cpp ****             HAL_GPIO_WritePin(phase_port, phase_pin, GPIO_PIN_RESET);
+  31:Lib/Src/A3921Driver.cpp ****         }
+  32:Lib/Src/A3921Driver.cpp **** 
+  33:Lib/Src/A3921Driver.cpp ****         // Convert speed to a 32-bit value and set PWM compare value
+  34:Lib/Src/A3921Driver.cpp ****         uint32_t mspeed_32 = fabsf(speed * __HAL_TIM_GET_AUTORELOAD(timer));
+ 122              		.loc 1 34 9 is_stmt 1 view .LVU18
+ 123              		.loc 1 34 44 is_stmt 0 view .LVU19
+ 124 003e 2368     		ldr	r3, [r4]
+ 125 0040 1A68     		ldr	r2, [r3]
+ 126 0042 D2ED0B7A 		vldr.32	s15, [r2, #44]	@ int
+ 127              		.loc 1 34 42 view .LVU20
+ 128 0046 F8EE677A 		vcvt.f32.u32	s15, s15
+ 129 004a 67EE887A 		vmul.f32	s15, s15, s16
+ 130              		.loc 1 34 35 view .LVU21
+ 131 004e F0EEE77A 		vabs.f32	s15, s15
+ 132              		.loc 1 34 75 view .LVU22
+ 133 0052 FCEEE77A 		vcvt.u32.f32	s15, s15
+ 134              	.LVL6:
+  35:Lib/Src/A3921Driver.cpp ****         __HAL_TIM_SET_COMPARE(timer, channel, mspeed_32);
+ 135              		.loc 1 35 9 is_stmt 1 view .LVU23
+ 136 0056 6368     		ldr	r3, [r4, #4]
+ 137 0058 53B9     		cbnz	r3, .L8
+ 138              		.loc 1 35 9 is_stmt 0 discriminator 1 view .LVU24
+ARM GAS  C:\Users\hamuc\AppData\Local\Temp\ccs9ZHXh.s 			page 4
+
+
+ 139 005a C2ED0D7A 		vstr.32	s15, [r2, #52]	@ int
+ 140              	.L3:
+ 141              		.loc 1 35 9 discriminator 1 view .LVU25
+ 142              	.LBE3:
+ 143              	.LBE5:
+  36:Lib/Src/A3921Driver.cpp ****     }
+  37:Lib/Src/A3921Driver.cpp **** }
+ 144              		.loc 1 37 1 view .LVU26
+ 145 005e BDEC028B 		vldm	sp!, {d8}
+ 146              	.LCFI3:
+ 147              		.cfi_remember_state
+ 148              		.cfi_restore 80
+ 149              		.cfi_restore 81
+ 150              		.cfi_def_cfa_offset 8
+ 151              	.LVL7:
+ 152              		.loc 1 37 1 view .LVU27
+ 153 0062 10BD     		pop	{r4, pc}
+ 154              	.LVL8:
+ 155              	.L6:
+ 156              	.LCFI4:
+ 157              		.cfi_restore_state
+ 158              	.LBB6:
+ 159              	.LBB4:
+  30:Lib/Src/A3921Driver.cpp ****         }
+ 160              		.loc 1 30 13 is_stmt 1 view .LVU28
+  30:Lib/Src/A3921Driver.cpp ****         }
+ 161              		.loc 1 30 30 is_stmt 0 view .LVU29
+ 162 0064 0022     		movs	r2, #0
+ 163 0066 018A     		ldrh	r1, [r0, #16]
+ 164 0068 C068     		ldr	r0, [r0, #12]
+ 165              	.LVL9:
+  30:Lib/Src/A3921Driver.cpp ****         }
+ 166              		.loc 1 30 30 view .LVU30
+ 167 006a FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 168              	.LVL10:
+  30:Lib/Src/A3921Driver.cpp ****         }
+ 169              		.loc 1 30 30 view .LVU31
+ 170 006e E6E7     		b	.L7
+ 171              	.LVL11:
+ 172              	.L8:
+  30:Lib/Src/A3921Driver.cpp ****         }
+ 173              		.loc 1 30 30 view .LVU32
+ 174 0070 043B     		subs	r3, r3, #4
+ 175 0072 0C2B     		cmp	r3, #12
+ 176 0074 14D8     		bhi	.L9
+ 177 0076 DFE803F0 		tbb	[pc, r3]
+ 178              	.L11:
+ 179 007a 07       		.byte	(.L14-.L11)/2
+ 180 007b 13       		.byte	(.L9-.L11)/2
+ 181 007c 13       		.byte	(.L9-.L11)/2
+ 182 007d 13       		.byte	(.L9-.L11)/2
+ 183 007e 0A       		.byte	(.L13-.L11)/2
+ 184 007f 13       		.byte	(.L9-.L11)/2
+ 185 0080 13       		.byte	(.L9-.L11)/2
+ 186 0081 13       		.byte	(.L9-.L11)/2
+ 187 0082 0D       		.byte	(.L12-.L11)/2
+ 188 0083 13       		.byte	(.L9-.L11)/2
+ARM GAS  C:\Users\hamuc\AppData\Local\Temp\ccs9ZHXh.s 			page 5
+
+
+ 189 0084 13       		.byte	(.L9-.L11)/2
+ 190 0085 13       		.byte	(.L9-.L11)/2
+ 191 0086 10       		.byte	(.L10-.L11)/2
+ 192 0087 00       		.p2align 1
+ 193              	.L14:
+  35:Lib/Src/A3921Driver.cpp ****         __HAL_TIM_SET_COMPARE(timer, channel, mspeed_32);
+ 194              		.loc 1 35 9 discriminator 3 view .LVU33
+ 195 0088 C2ED0E7A 		vstr.32	s15, [r2, #56]	@ int
+ 196 008c E7E7     		b	.L3
+ 197              	.L13:
+  35:Lib/Src/A3921Driver.cpp ****         __HAL_TIM_SET_COMPARE(timer, channel, mspeed_32);
+ 198              		.loc 1 35 9 discriminator 5 view .LVU34
+ 199 008e C2ED0F7A 		vstr.32	s15, [r2, #60]	@ int
+ 200 0092 E4E7     		b	.L3
+ 201              	.L12:
+  35:Lib/Src/A3921Driver.cpp ****         __HAL_TIM_SET_COMPARE(timer, channel, mspeed_32);
+ 202              		.loc 1 35 9 discriminator 7 view .LVU35
+ 203 0094 C2ED107A 		vstr.32	s15, [r2, #64]	@ int
+ 204 0098 E1E7     		b	.L3
+ 205              	.L10:
+  35:Lib/Src/A3921Driver.cpp ****         __HAL_TIM_SET_COMPARE(timer, channel, mspeed_32);
+ 206              		.loc 1 35 9 discriminator 9 view .LVU36
+ 207 009a C2ED127A 		vstr.32	s15, [r2, #72]	@ int
+ 208 009e DEE7     		b	.L3
+ 209              	.L9:
+  35:Lib/Src/A3921Driver.cpp ****         __HAL_TIM_SET_COMPARE(timer, channel, mspeed_32);
+ 210              		.loc 1 35 9 discriminator 10 view .LVU37
+ 211 00a0 C2ED137A 		vstr.32	s15, [r2, #76]	@ int
+ 212              	.LBE4:
+ 213              	.LBE6:
+ 214              		.loc 1 37 1 discriminator 10 view .LVU38
+ 215 00a4 DBE7     		b	.L3
+ 216              		.cfi_endproc
+ 217              	.LFE1072:
+ 218              		.fnend
+ 220              		.text
+ 221              	.Letext0:
+ 222              		.file 2 "c:\\program files (x86)\\arm gnu toolchain arm-none-eabi\\12.3 rel1\\arm-none-eabi\\inclu
+ 223              		.file 3 "c:\\program files (x86)\\arm gnu toolchain arm-none-eabi\\12.3 rel1\\arm-none-eabi\\inclu
+ 224              		.file 4 "Drivers/CMSIS/Device/ST/STM32G4xx/Include/stm32g431xx.h"
+ 225              		.file 5 "Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_def.h"
+ 226              		.file 6 "Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_gpio.h"
+ 227              		.file 7 "Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_dma.h"
+ 228              		.file 8 "Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_tim.h"
+ 229              		.file 9 "Lib/Inc/A3921Driver.hpp"
+ 230              		.file 10 "c:\\program files (x86)\\arm gnu toolchain arm-none-eabi\\12.3 rel1\\arm-none-eabi\\incl
+ 231              		.file 11 "c:\\program files (x86)\\arm gnu toolchain arm-none-eabi\\12.3 rel1\\arm-none-eabi\\incl
+ 232              		.file 12 "c:\\program files (x86)\\arm gnu toolchain arm-none-eabi\\12.3 rel1\\arm-none-eabi\\incl
+ 233              		.file 13 "c:\\program files (x86)\\arm gnu toolchain arm-none-eabi\\12.3 rel1\\arm-none-eabi\\incl
+ 234              		.file 14 "c:\\program files (x86)\\arm gnu toolchain arm-none-eabi\\12.3 rel1\\arm-none-eabi\\incl
+ 235              		.file 15 "c:\\program files (x86)\\arm gnu toolchain arm-none-eabi\\12.3 rel1\\arm-none-eabi\\incl
+ 236              		.file 16 "c:\\program files (x86)\\arm gnu toolchain arm-none-eabi\\12.3 rel1\\arm-none-eabi\\incl
+ARM GAS  C:\Users\hamuc\AppData\Local\Temp\ccs9ZHXh.s 			page 6
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 A3921Driver.cpp
+C:\Users\hamuc\AppData\Local\Temp\ccs9ZHXh.s:21     .text._ZN11A3921Driver4initEv:00000000 $t
+C:\Users\hamuc\AppData\Local\Temp\ccs9ZHXh.s:27     .text._ZN11A3921Driver4initEv:00000000 _ZN11A3921Driver4initEv
+.ARM.extab.text._ZN11A3921Driver4initEv:00000000 $d
+.ARM.exidx.text._ZN11A3921Driver4initEv:00000000 $d
+C:\Users\hamuc\AppData\Local\Temp\ccs9ZHXh.s:57     .text._ZN11A3921Driver3runEf:00000000 $t
+C:\Users\hamuc\AppData\Local\Temp\ccs9ZHXh.s:63     .text._ZN11A3921Driver3runEf:00000000 _ZN11A3921Driver3runEf
+C:\Users\hamuc\AppData\Local\Temp\ccs9ZHXh.s:179    .text._ZN11A3921Driver3runEf:0000007a $d
+.ARM.exidx.text._ZN11A3921Driver3runEf:00000000 $d
+C:\Users\hamuc\AppData\Local\Temp\ccs9ZHXh.s:192    .text._ZN11A3921Driver3runEf:00000087 $d
+C:\Users\hamuc\AppData\Local\Temp\ccs9ZHXh.s:192    .text._ZN11A3921Driver3runEf:00000088 $t
+
+UNDEFINED SYMBOLS
+HAL_TIM_PWM_Start
+__aeabi_unwind_cpp_pr1
+HAL_GPIO_WritePin
+__aeabi_unwind_cpp_pr0
