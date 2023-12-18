@@ -1,4 +1,4 @@
-22253645332781495
+22260478196185442
 0-Myparts
 2x20pin socket 2.54mmpins
 
@@ -399,12 +399,33 @@ smallshcale
 1
 1
 0_Mylib
+DIP4P
+SOIC8
+Integrated Circuit
+0
+8
+8
+0_Mylib
 DRL0008A-MFG
 
 TPS628511DRLR 
 0
 8
 8
+0_Mylib
+ESP32-WROOM-32UE_EXP
+
+ESP32-WROOM-32UE-N8 
+0
+47
+47
+0_Mylib
+FR01FR16H-S
+
+FR01FR16H-S 
+0
+5
+5
 0_Mylib
 ISO674x
 
@@ -426,6 +447,13 @@ Integrated Circuit
 0
 8
 8
+0_Mylib
+XG4A-2034_OMR
+
+XG4A-2034 
+0
+22
+22
 Audio_Module
 Reverb_BTDR-1H
 Digital Reverberation Unit, http://www.belton.co.kr/inc/downfile.php?seq=17&file=pdf (footprint from http://www.uk-electronic.de/PDF/BTDR-1.pdf)
@@ -73911,7 +73939,7 @@ PowerPAK SO-8 Single (https://www.vishay.com/docs/71655/powerpak.pdf, https://ww
 PowerPAK SO-8 Single
 0
 9
-5
+3
 Package_SO
 QSOP-16_3.9x4.9mm_P0.635mm
 16-Lead Plastic Shrink Small Outline Narrow Body (QR)-.150" Body [QSOP] (see Microchip Packaging Specification 00000049BS.pdf)
